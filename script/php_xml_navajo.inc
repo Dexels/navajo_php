@@ -63,6 +63,29 @@ function addMessage($msgName) { // adds a messageNode to the root of the $navajo
 	return $msgNode;
 }
 
+function addArrayMessage($msgName, $blnRootNode = true) { // adds a simple messageNode (type array, with submsg) to the root of the $navajoDoc
+
+        $parentNode = $GLOBALS['navajoDoc']->createElement("message");
+        $parentNode->setAttribute("name", $msgName);
+        $parentNode->setAttribute("type", "array");
+
+        $childNode = $GLOBALS['navajoDoc']->createElement("message");
+        $childNode->setAttribute("name", $msgName);
+        $childNode->setAttribute("count", "1");
+
+        $parentNode->appendChild($childNode);
+
+        if($blnRootNode) {
+                $rootNode = $GLOBALS['navajoDoc']->documentElement;
+                $rootNode->appendChild($parentNode);
+        } else {
+                $GLOBALS['currentMsg']->appendChild($parentNode);
+        }
+
+        $GLOBALS['currentMsg'] = $childNode;
+        return $childNode;
+}
+
 function addProperty($propName, $propType, $propValue, $propLength = "") { // adds a property to the msg
 
 	$propNode = $GLOBALS['navajoDoc']->createElement("property");
