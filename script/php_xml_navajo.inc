@@ -104,6 +104,21 @@ function addProperty($propName, $propType, $propValue, $propLength = "") { // ad
 	return $propNode;
 }
 
+function addSingleSelectionProperty($propName, $propValue, $propLength = "") { // adds a property to the msg
+
+        $propNode = $GLOBALS['navajoDoc']->createElement("property");
+        $propNode->setAttribute("name", $propName);
+        $propNode->setAttribute("type", 'selection');
+        $propNode->setAttribute("direction", "in");
+        $propNode->setAttribute("length", $propLength);
+        $propNode->setAttribute("cardinality", "1");
+        addOption($propValue, $propNode);
+
+        $GLOBALS['currentMsg']->appendChild($propNode);
+
+        return $propNode;
+}
+
 function addOption($optionValue, $parentNode) { // adds an option to a selection property 
 
 	$optionNode = $GLOBALS['navajoDoc']->createElement("option");
@@ -180,7 +195,7 @@ function postArrayToTml($array) {
 			$optionNode->setAttribute("value", $value);
 			$optionNode->setAttribute("selected", "1");
 			$propNode->appendChild($optionNode);
-		} if ($type == "boolean") { // booleans are always true, otherwise HTML forms omit them
+		} if ($type == "boolean" && $value != "false") { // booleans from checkboxes are always true, otherwise HTML forms omit them
 			$propNode->setAttribute("value", "true");
                 } else {
 			$propNode->setAttribute("value", $value);
