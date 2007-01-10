@@ -129,6 +129,7 @@ function addOption($optionValue, $parentNode) { // adds an option to a selection
 
 	return $parentNode;
 }
+//TODO huh?
 
 function addExpression($exprValue, $parentNode) { // adds an expression with a value to a parent node (e.g. a property)
 
