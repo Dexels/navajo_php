@@ -1,5 +1,5 @@
 <?php
-class CompetitionTableLayout extends NavajoLayout {
+class AdvancedTableLayout extends NavajoLayout {
 
     var $i;
     var $myprops;
@@ -28,7 +28,7 @@ class CompetitionTableLayout extends NavajoLayout {
                     if(!isset($_SESSION['subPage'])) {
                         $_SESSION['subPage'];
                     }
-                    echo "<a href='NavajoHandler.php?sortKey=" . $sortKey . "&sortDir=" . $sortDirection . "&msgName=".$msgName."&nav=".$nav."&".$_SESSION['subPage']."'>";
+                    echo "<a href='index.php?sortKey=" . $sortKey . "&sortDir=" . $sortDirection . "&action=".$_SESSION['currentPage']."&msgName=".$msgName."&nav=".$nav."&".$_SESSION['subPage']."'>";
                     NavajoPhpClient :: showDescription($nav, $property, $msg);
                     echo "</a>";
             }

@@ -1,22 +1,6 @@
 <?php
-require_once "NavajoPhpClient.php";
-require_once "CompetitionTableLayout.php";
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" dir="ltr" >
-<head>
-  <title>Sportlink Club Site</title>
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-  <meta name="description" content="sportlink club site">
-  <meta name="robots" content="index,follow"> 
-  <link rel="stylesheet" type="text/css" href="navajo.css" />
-</head>
-<body>
-<div class="navajo">
-<form action="NavajoHandler.php" method="post">
 
-<?php
-
+	require_once "navajo/AdvancedTableLayout.php";
 
 $teamsResult = getNavajo('external/competition/ProcessGetClubTeams');
 $clubTeams = $teamsResult->getMessage('Teams');
@@ -38,7 +22,7 @@ if ($selectedTeam != null) {
         $poolSetupResult = NavajoClient :: processNavajo('external/competition/ProcessGetPoolSetup', $initRes);
 
         $data = $poolSetupResult->getMessage('Teams');
-        $layout = new CompetitionTableLayout(array (
+        $layout = new AdvancedTableLayout(array (
             'TeamName',
             'ClubId',
             'TeamId'
@@ -51,7 +35,7 @@ if ($selectedTeam != null) {
         $poolStandingsResult = NavajoClient :: processNavajo('external/competition/ProcessGetPoolStandings', $initRes);
 
         $data = $poolStandingsResult->getMessage('PoolStandings');
-        $layout = new CompetitionTableLayout(array (
+        $layout = new AdvancedTableLayout(array (
             'TeamName',
             'TotalMatches',
             'Won',
@@ -73,7 +57,7 @@ if ($selectedTeam != null) {
         $p->setAttribute('value', $selectedPoolId);
 
         $data = $poolScheduleResult->getMessage('PoolSchedule');
-        $layout = new CompetitionTableLayout(array (
+        $layout = new AdvancedTableLayout(array (
             'ExternalMatchId',
             'MatchDate',
             'MatchTime',
@@ -91,7 +75,7 @@ if ($selectedTeam != null) {
 
         $data = $poolResultsResult->getMessage('PoolResults');
 
-        $layout = new CompetitionTableLayout(array (
+        $layout = new AdvancedTableLayout(array (
             'ExternalMatchId',
             'MatchDate',
             'HomeTeamName',
@@ -107,7 +91,3 @@ if ($selectedTeam != null) {
     echo "<div class='error'>U heeft geen team geselecteerd...</div>";
 }
 ?>
-</form>
-</div>
-</body>
-</html>

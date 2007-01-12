@@ -2,6 +2,7 @@
 	require_once "NavajoClient.php";
 	require_once "NavajoDocument.php";
 	require_once "NavajoLayout.php";
+	require_once "NavajoSite.php";
 	
 	class NavajoPhpClient {
 		

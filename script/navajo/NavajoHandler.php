@@ -3,9 +3,12 @@
 require_once "NavajoPhpClient.php";
 require_once "NavajoClient.php";
 
-session_start();
-
 NavajoClient :: updateNavajoFromPost();
+
+if (!isset ($_REQUEST['action']) ) {
+	$_REQUEST['action'] = $defaultPage;
+}
+
 
 if (isset ($_REQUEST['serverCall'])) {
     $actions = explode(';', $_REQUEST['serverCall']);
@@ -26,15 +29,39 @@ if (isset ($_REQUEST['sortKey'])) {
     $_SESSION['ordering'][$nav][$msgName]["sortDir"] = $_REQUEST['sortDir'];            
 }
 
-if (isset ($_REQUEST['action']) && $_REQUEST['action'] == 'exit') {
-    session_destroy();
+if (isset ($_REQUEST['action']) ) {
+	if($_REQUEST['action']=='exit') {
+		//session_start();
+		if(isset($_SESSION['site'])) {
+			$_SESSION['site']->onDestroySession();
+		}
+		session_destroy();
+		unset($_REQUEST['action']);
+		//session_start();
+		if(!isset($_SESSION['site'])) {
+			$_SESSION['site'] = new ClubSite();
+		    $_SESSION['site']->onStartSession();
+		}
+		
+		 include $siteHome.$defaultPage.'.php';
+    	
+	} else {
+		 $_SESSION['currentPage'] = $_REQUEST['action'];
+//		echo 'including: '.$siteHome.$_SESSION['currentPage'].'.php';
+		 include $siteHome.$_SESSION['currentPage'].'.php';
+	}
+		
 }
+
+if(!isset($_REQUEST['action'])) {
+	$_REQUEST['action']=$defaultPage;
+}
+
+
 if (isset ($_REQUEST['next']) && !is_null($_REQUEST['next'])) {
+	trace("DEPRECATED!");
     $_SESSION['currentPage'] = $_REQUEST['next'];
     $currentPage = $_SESSION['currentPage'];    
 }
-include $_SESSION['currentPage'];
 ?>
 
-	
-	

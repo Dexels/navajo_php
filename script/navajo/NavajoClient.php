@@ -71,7 +71,6 @@ class NavajoClient {
     static function callInitService($service) {
         $nav = new Navajo();
         $nav->setHeaderAttributes(self :: getUser(), self :: getPassword(), $service);
-        echo $nav->saveXML();
         $_SESSION['navajo@' . $service] = $nav->saveXML();
 
         return self :: processNavajo($service, $nav);
