@@ -1,7 +1,6 @@
 <?php
 	require_once "NavajoPhpClient.php";
 	require_once "TableLayout.php";
-	session_start();
 	
 ?>
 

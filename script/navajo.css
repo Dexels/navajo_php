@@ -1,0 +1,78 @@
+body {
+    font-size: 80%;
+}
+.navajo {    
+    padding: 10px;
+}
+
+
+label.property_fixed {
+    float: left;
+    width: 150px;
+    text-align: right;
+    margin-right: 15px;
+}
+
+table.navajo {
+     border:1px solid silver;
+     padding:0px;
+     margin-bottom:5px;
+}
+
+th  {
+    background-color: #444444;
+    color: #EFEFEF;
+    text-align:left;
+    padding:5px;    
+}
+
+th a {
+    text-decoration: none;
+    background-color: #444444;
+    color: #EFEFEF;
+    text-align:center;
+    border-bottom:1px dotted silver;
+}
+
+a:hover {
+     border-bottom:1px solid silver;
+}
+
+input {
+    color:black;
+    background-color: #f5f5f5;
+    font-size: x-small;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #cccccc;
+    margin-bottom: 10px;
+    vertical-align: middle;
+}
+
+select {
+    color:black;
+    width: 120px;
+    font-size: x-small;
+    background-color: #f5f5f5;
+    border-color: #cccccc;
+    border-style: solid;
+    border-width: 1px;
+    margin-bottom: 10px;
+}
+
+.navajo tr {
+    vertical-align:middle;
+}
+
+.navajo tr.row_odd {
+    background-color: #EEEEEE;
+    vertical-align:middle;
+}
+.navajo tr:hover {
+    background-color: #feffc9;
+}
+
+.error {
+    font-weight: bold;
+    color:red;
+}
