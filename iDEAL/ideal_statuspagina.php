@@ -41,7 +41,8 @@ if (isset ($_GET['trxid']) && isset($_SESSION['invoiceId'])) {
                 $invoiceData = NavajoClient :: processNavajo('vla/financial/ProcessQueryInvoice', $n);
 
                 NavajoClient :: processNavajo('vla/financial/ProcessUpdateInvoicePayment', $invoiceData);
-
+				NavajoClient :: processNavajo('vla/financial/ProcessSendIdealStatusEmail', $invoiceData);
+				
                 echo "<div class='saPanel' style='width:800px;margin:auto'>";
                 echo "<div>";
                 echo "<table class='saTable' cellpadding='0' cellspacing='0' border='0'>";

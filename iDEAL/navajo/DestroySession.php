@@ -4,5 +4,3 @@
 	
 	session_destroy();
 ?>
-
-De sessie is weg, ouwe.

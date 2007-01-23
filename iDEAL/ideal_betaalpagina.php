@@ -115,11 +115,11 @@ if (!isset ($_POST['submit'])) {
 
                     $_SESSION['site']->echoPanelFooter();
                     $_SESSION['site']->echoPanelHeader();
-                    echo "<table class='saTable' cellpadding='0' cellspacing='0' border='0'>";
+                    echo "<table class='saTable' cellpadding='0' cellspacing='0' border='0'>\n";
                     echo "<tr>";
                     echo "<td style='background-color:#ffffff;width:366px'>";
-                    echo "<form method='POST' action='' name='iDEAL payment' style='padding-top:20px;padding-left:80px;'>";
-                    echo "<select name='issuerID' style='width:150px;>";
+                    echo "<form method='POST' action='' name='iDEAL payment' style='padding-top:20px;padding-left:80px;'>\n";
+                    echo "<select name='issuerID' style='width:150px;'>";
                     echo "<option value='0'>kies uw bank...</option>";
                     for ($i = 0; $i < count($issuerArrayShort); $i++) {
                         echo ("<option value='{$issuerArrayShort[$i]->issuerID}'> {$issuerArrayShort[$i]->issuerName} </option>");
@@ -145,8 +145,8 @@ if (!isset ($_POST['submit'])) {
                     echo "U ziet dan direct de status van uw betaling terug.</p><br />";
                     echo "</td>";
                     echo "</tr>";
-                    echo "</table>";
-
+                    echo "</table>\n";
+                    $_SESSION['aap'] = 'noot';
                 }
             } else {
                 print "<p class='error'>Geen betaling mogelijk, omdat deze factuur op " . date('d-m-Y', strtotime($invoicePaymentDate)) . " al is betaald.</p>";
@@ -174,7 +174,8 @@ if (!isset ($_POST['submit'])) {
         $data->setIssuerID($_POST['issuerID']);
         $data->setPurchaseID($_SESSION['invoiceId']);
         $data->setEntranceCode($_SESSION['personId']);
-        $data->setAmount($_SESSION['invoiceAmount'] * 100);
+#        $data->setAmount($_SESSION['invoiceAmount'] * 100);
+        $data->setAmount(4200);
 
         $rule = new ThinMPI();
         $result = new AcquirerTrxResponse();
@@ -184,7 +185,7 @@ if (!isset ($_POST['submit'])) {
             $transactionID = $result->getTransactionID();
             $_SESSION['transactionId'] = $transactionID;
             $IssuerUrl = $result->getIssuerAuthenticationURL();
-            $IssuerUrl = html_entity_decode($IssuerUrl);
+            $IssuerUrl = html_entity_decode($IssuerUrl);           
             header("Location: $IssuerUrl");
             exit ();
         } else {

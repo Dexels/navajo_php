@@ -1,13 +1,11 @@
 <?php
-	unset($_SESSION);
 	require_once "NavajoClient.php";
 	require_once "NavajoDocument.php";
 	require_once "NavajoLayout.php";
 	require_once "NavajoSite.php";
 	
 	class NavajoPhpClient {
-		
-		
+				
 		static function showAbsoluteProperty($navname, $path, $blnOut = false, $blnDescription = false, $classsuffix = '') {
 			$nav = getNavajo($navname);
 			if(is_null($nav)) {
