@@ -71,11 +71,7 @@ class NavajoClient {
         # $navajo->printXML();
         $ch = curl_init();
         $contents = $navajo->saveXML();
-        echo "<!-- sending contents: ".$contents."-->\n";
-        echo "<!-- sending username: ". self :: getUser()."-->\n";
-        echo "<!-- sending server: ". self :: getServer()."-->\n";
-        echo "<!-- sending password: ". self :: getPassword()."-->\n";
-        
+         
         curl_setopt($ch, CURLOPT_URL, self :: getServer());
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
@@ -100,8 +96,7 @@ class NavajoClient {
         }
 		
 		
-		echo '<!-- Received body: '.$body.'-->';
-//        curl_close($ch);
+        curl_close($ch);
         $res = new Navajo();
 
         $res->parseXml($result);
@@ -132,12 +127,7 @@ class NavajoClient {
             exit();
         }
         //;
-	//	file_put_contents("c:/wamp/www/input". str_replace('/','_',$serv).".txt",$navajo->saveXML(),FILE_APPEND);
-      
-     //   file_put_contents("c:/wamp/www/output". str_replace('/','_',$serv).".txt",$result,FILE_APPEND);
-     //   file_put_contents("c:/wamp/www/navajo_output". str_replace('/','_',$serv).".txt",$res->saveXML(),FILE_APPEND);
-        //		trace('hubba');
-        return $res;
+	        return $res;
     }
 
     static function callInitService($service) {
