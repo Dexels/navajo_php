@@ -10,9 +10,9 @@ defined("_JEXEC") or die("Restricted access");
 
 //require_once "navajo/NavajoJoomla.php";
 //require_once "navajo/sportlinkclubsite.class.php";
-require_once "navajo/client/NavajoClient.php";
-require_once "navajo/document/NavajoDoc.php";
-require_once "navajo/phpclient/NavajoPhpClient.php";
+require_once "client/NavajoClient.php";
+require_once "document/NavajoDoc.php";
+require_once "phpclient/NavajoPhpClient.php";
 
 //session_name($joomlaSessionName);
 //session_start();
