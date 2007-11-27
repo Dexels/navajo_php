@@ -92,7 +92,7 @@ class plgAuthenticationNavajo extends JPlugin
 				//$username['username']== $username['password']
 		$resultProp = $n2->getAbsoluteProperty('/Authenticated/Ok');
 		$result = 'false';
-			if(isset($resultProp)) {
+		if(isset($resultProp)) {
 			$result = $resultProp->getValue();
 			$role = $n2->getAbsoluteProperty('/Authenticated/UserRole')->getValue();
 		}

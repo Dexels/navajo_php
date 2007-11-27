@@ -16,6 +16,8 @@
 defined('_JEXEC') or die();
 
 jimport('joomla.event.plugin');
+jimport( 'joomla.event.handler' );
+
 require_once JPATH_SITE . "/plugins/content/navajo/client/NavajoClient.php";
 require_once JPATH_SITE . "/plugins/content/navajo/document/NavajoDoc.php";
 
@@ -173,7 +175,6 @@ class plgUserNavajo extends JPlugin {
 		$n->getAbsoluteProperty('/UserData/Password')->setValue($user['password']);
 		$n->getAbsoluteProperty('/Club/ClubIdentifier')->setValue($clubId);
 		$n2 = NavajoClient::processNavajo("vla/sportlinkathlete/ProcessLoginAthleteUser",$n);
-		file_put_contents("c:/wamp/www/gelul.txt",$n2->saveXml(),FILE_APPEND);
 		$fullNameProp = $n2->getAbsoluteProperty('/Person/FullName');
 
 		if(isset($fullNameProp) && is_object($fullNameProp)) {
@@ -183,7 +184,6 @@ class plgUserNavajo extends JPlugin {
 			$user['postcode'] = $n2->getAbsoluteProperty('/Person/ZipCode')->getValue();
 			$user['country'] = 'NL';
 			$instance =& $this->_getUser($user, $options);
-			file_put_contents("c:/wamp/www/gezwam.txt",'user login ok',FILE_APPEND);
 			return $instance;
 		} else {
 			$user['email'] = 'albertus@aep.net';
@@ -217,19 +217,22 @@ class plgUserNavajo extends JPlugin {
 	 */
 	function onLogoutUser($user)
 	{
-		// Initialize variables
-		$success = false;
+		// Remove the session from the session table
+		$table = & JTable::getInstance('session');
+		$table->destroy($user['id'], $options['clientid']);
 
-		/*
-		 * Here you would do whatever you need for a logout routine with the credentials
-		 *
-		 * In this example the boolean variable $success would be set to true
-		 * if the logout routine succeeds
-		 */
-
-		//ThirdPartyApp::loginUser($user['username'], $user['password']);
-
-		return $success;
+		$my =& JFactory::getUser();
+		if($my->get('id') == $user['id']) 
+		{
+			// Hit the user last visit field
+			$my->setLastVisit();
+			
+			// Destroy the php session for this user
+			$session =& JFactory::getSession();
+			$session->destroy();
+		}
+		
+		return true;
 	}
 
 	/**
