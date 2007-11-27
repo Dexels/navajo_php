@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- $Id$ -->
+<project name="NavajoAuthPlugin" default="all" basedir=".">
+	<property name="archive" value="${ant.project.name}.jar"/>
+
+	<target name="clean">
+		<delete file="${archive}"/>
+	</target>
+
+	<target name="authorization">
+		<zip zipfile="navajo_authorization.zip">
+			<fileset dir="authorization"/>
+		</zip>
+	</target>
+	<target name="user">
+		<zip zipfile="navajo_user.zip">
+			<fileset dir="user"/>
+		</zip>
+	</target>	
+	<target name="content">
+		<zip zipfile="navajo_content.zip">
+			<fileset dir="content"/>
+		</zip>
+	</target>	
+
+	<target name="all" depends="authorization,user,content"/>
+   
+</project>
+<!-- EOF: $RCSfile$ -->
