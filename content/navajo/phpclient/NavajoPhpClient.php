@@ -1,7 +1,7 @@
 <?php
 class NavajoPhpClient {
 
-    static function showTable($navname, $msgpath, $columns, $params="", $columnWidths = "", $updateNavajo = "", $deleteNavajo = "") {
+    static function showTable($navname, $msgpath, $columns, $params="", $columnWidths = "", $columnLabels = "", $updateNavajo = "", $deleteNavajo = "") {
         require_once "NavajoLayout.php";   
         $result = getNavajo($navname);
 
@@ -16,7 +16,7 @@ class NavajoPhpClient {
             $layout = new $params["customLayout"]($columns);
           } else {
             require_once "AdvancedTableLayout.php";   
-       	    $layout = new AdvancedTableLayout($columns, $params, $columnWidths);
+       	    $layout = new AdvancedTableLayout($columns, $params, $columnWidths, $columnLabels);
         }
         if($updateNavajo != "") {
             echo "<input type='submit' name='submit' class='updateBtn hidden' value='Update_" . $navname . "' />";
@@ -506,7 +506,7 @@ class NavajoPhpClient {
     }
 
     static function outputDateProperty($nav, $property, $id, $params, $classsuffix) {
-        $value = date("Y-m-d", strtotime($property->getAttribute("value")));
+        $value = date("d/m/Y", strtotime($property->getAttribute("value")));
         echo $value;
     }
 

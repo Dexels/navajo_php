@@ -76,7 +76,6 @@ function startnavajo() {
 	
 }
 
-
 function replaceTags($text) {
      initNavajo();
      
@@ -361,7 +360,21 @@ function tableInclude($matches) {
     $columnString = $matches["columns"];
 
     $columns = explode(",", $columnString);
-
+    
+    if (isset($matches["columnWidths"])) {
+        $columnWidthString = $matches["columnWidths"];
+        $columnWidths = explode(",", $columnWidthString);
+    } else {
+    	$columnWidths = "";
+    }
+    
+    if (isset($matches["columnLabels"])) {
+        $columnLabelString = $matches["columnLabels"];
+        $columnLabels = explode(",", $columnLabelString);
+    } else {
+    	$columnLabels = "";
+    }
+    
     # "target" attribute is set to the alias of an article; get corresponding articleid from J! database
     if (isset($matches["target"])) {
    	    $alias = $matches["target"];
@@ -374,7 +387,7 @@ function tableInclude($matches) {
         $matches["Itemid"] = $_REQUEST["Itemid"];
     }
 
-    NavajoPhpClient :: showTable($navajo, $path, $columns, $matches);
+    NavajoPhpClient :: showTable($navajo, $path, $columns, $matches, $columnWidths, $columnLabels);
 }
 
 function submitInclude($matches) {

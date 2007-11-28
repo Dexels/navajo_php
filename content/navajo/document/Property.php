@@ -55,6 +55,11 @@ class Property extends BaseNode {
         return $this->name;
     }
     
+     
+    public function getDescription() {
+        return $this->description;
+    }
+    
     public function getType() {
         return $this->type;
     }

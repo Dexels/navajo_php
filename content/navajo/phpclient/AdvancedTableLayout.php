@@ -4,9 +4,10 @@ class AdvancedTableLayout extends NavajoLayout {
 	var $myprops;
 	var $columnWidths;
 
-	function __construct($properties, $params, $columnWidths="") {
+	function __construct($properties, $params, $columnWidths="", $columnLabels="") {
 		$this->myprops = $properties;
 		$this->columnWidths = $columnWidths;
+		$this->columnLabels = $columnLabels;
 	}
 
 	protected function beforeRendering($params) {
@@ -37,6 +38,7 @@ class AdvancedTableLayout extends NavajoLayout {
 		
 		foreach ($this->myprops as $property) {
 			$params['width'] = (isset($this->columnWidths[$j]))?$this->columnWidths[$j]:"100";
+			$params['label'] = (isset($this->columnLabels[$j]))?$this->columnLabels[$j]:$msg->getProperty($property)->getDescription();
 			switch ($property) {
 		        case $key :
 					break;        		
@@ -47,10 +49,7 @@ class AdvancedTableLayout extends NavajoLayout {
 					echo "\t<th width='" . $params['width'] . "' />";
 					break;
 				default :
-					echo "\t<th width='" . $params['width'] . "' >";
-					$msgName = $msg->getAttribute("name");
-					NavajoPhpClient :: showDescription($nav, $property, $msg, $params);
-					echo "</th>\n";
+					echo "\t<th width='" . $params['width'] . "' >" . $params['label'] . "</th>\n";
 			}
 			$j++;
 		}
@@ -64,8 +63,6 @@ class AdvancedTableLayout extends NavajoLayout {
 		$sfx = ($i % 2) ? "odd" : "even";
 		echo "<tr class='row_" . $sfx . "'>\n";
 		foreach ($this->myprops as $property) {
-			$params['width'] = (isset($this->columnWidths[$j]))?$this->columnWidths[$j]:"100";
-			
 			switch ($property) {
 				case $key :
 				    $p = $msg->getProperty($property);
