@@ -34,12 +34,12 @@ class NavajoPhpClient {
     static function setValue($navname, $proppath, $value) {
         $nav = getNavajo($navname);
         $p = $nav->getAbsoluteProperty($proppath);
-	extract($_GET);
-	if(strpos($value, "@") == 0) {
-		if (isset(${substr($value, 1)})) { 
-  		    $value = ${substr($value, 1)};
-                }
-	}
+	    extract($_GET);
+	    if(strpos($value, "@") == 0) {
+		    if (isset(${substr($value, 1)})) { 
+  		        $value = ${substr($value, 1)};
+            }
+   	    }
         $p->setValue($value);
     }
 

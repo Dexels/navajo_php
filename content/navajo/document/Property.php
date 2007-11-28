@@ -79,7 +79,11 @@ class Property extends BaseNode {
     }
 
     public function setValue($v) {
-        $this->value = stripslashes($v);
+        if ($this->type == 'selection') {
+        	$this->setSelectedByValue($v);
+        } else {
+        	$this->value = stripslashes($v);
+        } 
     }
 
     public function getTagName() {
