@@ -17,6 +17,7 @@ require_once "navajo/phpclient/NavajoPhpClient.php";
 //echo 'Session name: '.$joomlaSessionName;
 session_name($joomlaSessionName);
 session_start();
+require_once "navajo/NavajoHandler.php";
 
 class plgContentNavajo extends JPlugin
 {

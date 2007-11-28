@@ -2,10 +2,8 @@
 class NavajoPhpClient {
 
     static function showTable($navname, $msgpath, $columns, $columnWidths = "", $updateNavajo = "", $deleteNavajo = "", $params="") {
-        require_once "NavajoLayout.php";
+        require_once "NavajoLayout.php";   
         $result = getNavajo($navname);
-        //print_r($params);
-        //print_r($params);
         
         $data = $result->getMessage($msgpath);
         if (is_null($data)) {
@@ -17,8 +15,6 @@ class NavajoPhpClient {
             require_once $params["customLayout"].".php";   
             $layout = new $params["customLayout"]($columns);
           } else {
-            //require_once "SeeMeLayout.php";   
-       	    //$layout = new SeeMeLayout($columns);
             require_once "AdvancedTableLayout.php";   
        	    $layout = new AdvancedTableLayout($columns, $columnWidths);
         }
@@ -38,12 +34,12 @@ class NavajoPhpClient {
     static function setValue($navname, $proppath, $value) {
         $nav = getNavajo($navname);
         $p = $nav->getAbsoluteProperty($proppath);
-	    extract($_GET);
-	    if(strpos($value, "@") == 0) {
-		    if (isset(${substr($value, 1)})) { 
-  		        $value = ${substr($value, 1)};
-            } 
-	    }
+	extract($_GET);
+	if(strpos($value, "@") == 0) {
+		if (isset(${substr($value, 1)})) { 
+  		    $value = ${substr($value, 1)};
+                }
+	}
         $p->setValue($value);
     }
 

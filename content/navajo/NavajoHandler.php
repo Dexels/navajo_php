@@ -35,9 +35,6 @@ if (isset ($_REQUEST['serverCall']) && isset($_SESSION['formId'])) {
     }
 }
 
-if (!isset ($_REQUEST['action'])) {
-    $_REQUEST['action'] = $defaultPage;
-}
 /*
 if (isset($target) || isset ($_REQUEST['action'])) {
     if ($_REQUEST['action'] == 'exit') {
