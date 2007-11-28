@@ -7,12 +7,10 @@ defined("_JEXEC") or die("Restricted access");
 
 //ini_set("session.save_handler", "files");
 
-
-//require_once "navajo/NavajoJoomla.php";
-//require_once "navajo/sportlinkclubsite.class.php";
 require_once "client/NavajoClient.php";
 require_once "document/NavajoDoc.php";
 require_once "phpclient/NavajoPhpClient.php";
+//require_once "NavajoHandler.php";
 
 //session_name($joomlaSessionName);
 //session_start();
@@ -170,11 +168,9 @@ function errorMessageInclude($result) {
 }
 
 function startNavajoInclude() {
-    $msg = "<!-- Starting navajo form -->\n" .
-    "<div class='navajo'><form action='./components/com_navajo/navajo/NavajoHandler.php' method='POST' enctype='multipart/form-data'>\n" .
-    "<input type='hidden' name='option' value='com_navajo'/>\n" .
-    "<input type='hidden' name='redirect' value='true'/>\n" .
-    "<input type='hidden' name='view' value='article'/>\n";
+    $msg = "<div class='navajo'><form action='index.php' method='POST' enctype='multipart/form-data'>\n" .
+           "<input type='hidden' name='option' value='com_content'/>\n" .
+           "<input type='hidden' name='view' value='article'/>\n"; 
     return $msg;
 }
 
@@ -200,7 +196,6 @@ function callService($matches) {
     } else {
         $input = $currentNavajo;
     }
-    print "<!-- Calling service: $navajo.  -->";
     $n = getNavajo($navajo);
     if ($n != null) {
         // navajo present;
@@ -367,6 +362,18 @@ function tableInclude($matches) {
 
     $columns = explode(",", $columnString);
 
+    # "target" attribute is set to the alias of an article; get corresponding articleid from J! database
+    if (isset($matches["target"])) {
+   	    $alias = $matches["target"];
+        $db =& JFactory::getDBO();
+        $query = "SELECT id FROM #__content WHERE alias = '".$alias."'";
+        $db->setQuery( $query );
+        $matches["id"] = $db->loadResult();
+    }
+    if (isset ($_REQUEST["Itemid"])) {
+        $matches["Itemid"] = $_REQUEST["Itemid"];
+    }
+
     NavajoPhpClient :: showTable($navajo, $path, $columns, $matches);
 }
 
@@ -380,17 +387,10 @@ function submitInclude($matches) {
     
     $alias = $matches["target"];       
     $db =& JFactory::getDBO();
-    $query = "SELECT id FROM #__content WHERE title_alias = '".$alias."'";
+    $query = "SELECT id FROM #__content WHERE alias = '".$alias."'";
     $db->setQuery( $query );
     $id = $db->loadResult();          
-    
-    # Ugly code -> fall back to default "show all" article. Put this in some global later
-    if ($id == null) {
-        $query = "SELECT id FROM #__content WHERE title_alias = 'show-all'";
-    	$db->setQuery( $query );
-    	$id = $db->loadResult();                
-    }   
-    
+
     if (isset ($_REQUEST["Itemid"])) {
         echo "<input type='hidden' name='" . $label . ":itemid' value='" . $_REQUEST["Itemid"] . "'/>";
     }

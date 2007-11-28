@@ -1,10 +1,10 @@
 <?php
 class NavajoPhpClient {
 
-    static function showTable($navname, $msgpath, $columns, $columnWidths = "", $updateNavajo = "", $deleteNavajo = "", $params="") {
+    static function showTable($navname, $msgpath, $columns, $params="", $columnWidths = "", $updateNavajo = "", $deleteNavajo = "") {
         require_once "NavajoLayout.php";   
         $result = getNavajo($navname);
-        
+
         $data = $result->getMessage($msgpath);
         if (is_null($data)) {
             echo ("Message: $msgpath not found in navajo: $navname");
@@ -16,7 +16,7 @@ class NavajoPhpClient {
             $layout = new $params["customLayout"]($columns);
           } else {
             require_once "AdvancedTableLayout.php";   
-       	    $layout = new AdvancedTableLayout($columns, $columnWidths);
+       	    $layout = new AdvancedTableLayout($columns, $params, $columnWidths);
         }
         if($updateNavajo != "") {
             echo "<input type='submit' name='submit' class='updateBtn hidden' value='Update_" . $navname . "' />";
