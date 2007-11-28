@@ -1,29 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <project name="NavajoAuthPlugin" default="all" basedir=".">
-	<property name="archive" value="${ant.project.name}.jar"/>
+	<property name="liveSite" value="../JoomlaAuth" />
+	<property name="livePlugin" value="${liveSite}/plugins" />
+	<property name="archive" value="${ant.project.name}.jar" />
 
 	<target name="clean">
-		<delete file="${archive}"/>
+		<delete file="${archive}" />
 	</target>
 
 	<target name="authorization">
 		<zip zipfile="navajo_authorization.zip">
-			<fileset dir="authorization"/>
+			<fileset dir="authorization" />
 		</zip>
 	</target>
 	<target name="user">
 		<zip zipfile="navajo_user.zip">
-			<fileset dir="user"/>
+			<fileset dir="user" />
 		</zip>
-	</target>	
+	</target>
 	<target name="content">
 		<zip zipfile="navajo_content.zip">
-			<fileset dir="content"/>
+			<fileset dir="content" />
 		</zip>
-	</target>	
+	</target>
+	
+	<target name="copytolive">
+		<copy todir="${livePlugin}/content">
+			<fileset dir="content" />
+		</copy>
+		<copy todir="${livePlugin}/authorization">
+			<fileset dir="content" />
+		</copy>
+		<copy todir="${livePlugin}/user">
+			<fileset dir="user" />
+		</copy>
+	</target>
 
-	<target name="all" depends="authorization,user,content"/>
-   
+
+	<target name="all" depends="authorization,user,content,copytolive" />
+
 </project>
 <!-- EOF: $RCSfile$ -->
