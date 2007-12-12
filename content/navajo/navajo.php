@@ -158,8 +158,6 @@ function navajoTagReplacer($matches) {
     return $result;
 }
 
-
-
 function errorMessageInclude($result) {
     if (isset ($_REQUEST["errormessage"])) {
         echo $_REQUEST["errormessage"];
@@ -167,7 +165,8 @@ function errorMessageInclude($result) {
 }
 
 function startNavajoInclude() {
-    $msg = "<div class='navajo'><form action='index.php' method='POST' enctype='multipart/form-data'>\n" .
+    $msg = "<script type='text/javascript' src='includes/js/tablesort.js'></script>\n" .
+           "<div class='navajo'><form action='index.php' method='POST' enctype='multipart/form-data'>\n" .
            "<input type='hidden' name='option' value='com_content'/>\n" .
            "<input type='hidden' name='view' value='article'/>\n"; 
     return $msg;

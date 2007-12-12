@@ -14,7 +14,7 @@ defined('_JEXEC') or die();
 jimport('joomla.event.plugin');
 require_once JPATH_SITE . "/plugins/content/navajo/client/NavajoClient.php";
 require_once JPATH_SITE . "/plugins/content/navajo/document/NavajoDoc.php";
-
+ 
 /**
  * Example Authentication Plugin.  Based on the example.php plugin in the Joomla! Core installation
  *

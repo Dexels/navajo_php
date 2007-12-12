@@ -2,12 +2,12 @@
 abstract class NavajoLayout {
     abstract protected function render($nav, $message_element, $params);
 
-    protected function beforeRendering($params) {
+    protected function beforeRendering($nav, $params) {
     }
 
     public function doRender($nav, $amsg, $params) {
         $myNavajo = getNavajo($nav);
-        $this->beforeRendering($params);
+        $this->beforeRendering($nav, $params);
         $subm = $amsg->getSubMessages();
         if ($amsg->getArraySize() > 0) {
             $keys = array_keys($subm);
@@ -19,10 +19,10 @@ abstract class NavajoLayout {
         foreach ($subm as $mm) {
                 $this->render($nav, $mm, $params);
         }
-        $this->afterRendering($params);
+        $this->afterRendering($nav, $params);
     }
 
-    protected function afterRendering($params) {
+    protected function afterRendering($nav, $params) {
     }
 
 }

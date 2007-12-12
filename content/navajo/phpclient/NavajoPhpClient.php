@@ -275,7 +275,7 @@ class NavajoPhpClient {
         if (isset($params['width'])) {
             $width = "style='width:" . $params['width'] . "px'";
         } else {
-            $width = "style='width:180px'";
+            $width = "style='width:150px'";
         }
         echo "<input type='text' class='property" . $classsuffix . "' name='" . $id . "' value='" . $value . "' maxlength='" . $length . "' $width/>";
 
@@ -283,7 +283,12 @@ class NavajoPhpClient {
 
     static function inputIntegerProperty($nav, $property, $id, $params, $classsuffix) {
         $value = $property->getAttribute("value");
-        echo "<input type='text' class='property" . $classsuffix . "' name='" . $id . "' value='" . $value . "'/>";
+        if (isset($params['width'])) {
+            $width = "style='width:" . $params['width'] . "px'";	
+        } else {
+            $width = "style='width:150px'";
+        }
+        echo "<input type='text' class='property" . $classsuffix . "' name='" . $id . "' value='" . $value . "' $width/>";
     }
 
     static function inputBooleanProperty($nav, $property, $id, $params, $classsuffix) {
@@ -307,7 +312,7 @@ class NavajoPhpClient {
         if (isset($params['width'])) {
             $width = "style='width:" . $params['width'] . "px'";
         } else {
-            $width = "style='width:180px'";
+            $width = "style='width:150px'";
         }
         echo "<select class='property" . $classsuffix . "' name='" . $id . "' " . $width . ">";
 
@@ -352,7 +357,12 @@ class NavajoPhpClient {
 
     static function inputDateProperty($nav, $property, $id, $params, $classsuffix = "") {
         $value = date("Y-m-d", strtotime($property->getAttribute("value")));
-        echo "<input type='text' class='date property" . $classsuffix . "' name='" . $id . "' value='" . $value . "'/>";
+        if (isset($params['width'])) {
+            $width = "style='width:" . $params['width'] . "px'";
+        } else {
+            $width = "style='width:150px'";
+        }
+        echo "<input type='text' class='date property" . $classsuffix . "' name='" . $id . "' value='" . $value . "' $width />";
     }
 
     static function inputBinaryProperty($nav, $property, $id, $params, $classsuffix) {

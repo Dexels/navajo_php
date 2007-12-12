@@ -10,10 +10,9 @@ class AdvancedTableLayout extends NavajoLayout {
 		$this->columnLabels = $columnLabels;
 	}
 
-	protected function beforeRendering($params) {
+	protected function beforeRendering($nav, $params) {
 		global $i, $key, $link, $id, $itemId;
 		$i = 1;
-		
 		$key    = (isset($params["key"]))?$params["key"]:null;
 		$link   = (isset($params["link"]))?$params["link"]:null;
 		$id     = (isset($params["id"]))?$params["id"]:null;
@@ -27,13 +26,13 @@ class AdvancedTableLayout extends NavajoLayout {
 		} else {
 			$totalWidth = "100%";
 		}
-		echo "<table class='navajo' cellpadding='3' cellspacing='0' border='0' width='" . $totalWidth . "'>\n";
+		echo "\n<table id='" . $nav . "' class='sortable-onload-1 rowstyle-alt no-arrow' cellpadding='3' cellspacing='0' border='0' width='" . $totalWidth . "'>\n";
 	}
 
 	protected function renderHeader($nav, $msg, $params) {
 		global $key;
 		$j = 0;
-		
+		echo "<thead>\n";
 		echo "<tr>\n";
 		
 		foreach ($this->myprops as $property) {
@@ -49,11 +48,13 @@ class AdvancedTableLayout extends NavajoLayout {
 					echo "\t<th width='" . $params['width'] . "' />";
 					break;
 				default :
-					echo "\t<th width='" . $params['width'] . "' >" . $params['label'] . "</th>\n";
+					echo "\t<th width='" . $params['width'] . "' class='sortable-text'>" . $params['label'] . "</th>\n";
 			}
 			$j++;
 		}
 		echo "</tr>\n";
+		echo "</thead>\n";
+		echo "<tbody>\n";
 	}
 	protected function render($nav, $msg, $params) {
 		global $i, $key, $link, $id, $itemId;
@@ -97,8 +98,10 @@ class AdvancedTableLayout extends NavajoLayout {
 		echo "</tr>\n";
 	}
 
-	protected function afterRendering($params) {
+	protected function afterRendering($nav, $params) {
+		echo "</tbody>\n";
 		echo "</table>\n";
+	
 	}
 
 }

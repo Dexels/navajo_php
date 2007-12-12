@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <project name="NavajoAuthPlugin" default="all" basedir=".">
-	<property name="liveSite" value="../JoomlaAuth" />
+	<property name="liveSite" value="../clubsite" />
 	<property name="livePlugin" value="${liveSite}/plugins" />
 	<property name="archive" value="${ant.project.name}.jar" />
 

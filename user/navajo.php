@@ -173,7 +173,7 @@ class plgUserNavajo extends JPlugin {
 		}
 		$usr->setValue($user['username']);
 		$n->getAbsoluteProperty('/UserData/Password')->setValue($user['password']);
-		$n->getAbsoluteProperty('/Club/ClubIdentifier')->setValue($clubId);
+	
 		$n2 = NavajoClient::processNavajo("vla/sportlinkathlete/ProcessLoginAthleteUser",$n);
 		$fullNameProp = $n2->getAbsoluteProperty('/Person/FullName');
 
