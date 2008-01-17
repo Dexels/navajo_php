@@ -247,7 +247,7 @@ class NavajoPhpClient {
                     NavajoPhpClient :: outputDateProperty($nav, $property, $id, $params, $classsuffix);
                     break;
                 case "memo" :
-                    NavajoPhpClient :: outputMemoProperty($nav, $property, $id, $params, $classsuffix, $blnDescription);
+                    NavajoPhpClient :: outputMemoProperty($nav, $property, $id, $params, $classsuffix);
                     break;
 
                 case "binary" :
