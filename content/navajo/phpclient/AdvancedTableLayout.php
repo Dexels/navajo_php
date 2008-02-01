@@ -19,41 +19,55 @@ class AdvancedTableLayout extends NavajoLayout {
 		$itemId = (isset($params["Itemid"]))?$params["Itemid"]:null;
 		
 		$totalWidth = "0";
+		
 		if(is_array($this->columnWidths)) {
+			$colGroup = "<colgroup>\n";
 			foreach ($this->columnWidths as $currentWidth) {
-				$totalWidth += $currentWidth + 3;
+                        	if($currentWidth != 0) {
+					$totalWidth += $currentWidth + 3;
+					$colGroup .= "<col width='". $currentWidth . "px'/>\n";	
+				}	
 			}
+			$colGroup .= "</colgroup>\n";
 		} else {
 			$totalWidth = "100%";
+			$colGroup = "";
 		}
-		echo "\n<table id='" . $nav . "' class='sortable-onload-1 rowstyle-alt no-arrow' cellpadding='3' cellspacing='0' border='0' width='" . $totalWidth . "'>\n";
+		$tableCSS = "sortable rowstyle-alt no-arrow";
+		if(isset($params["class"])) {
+			$tableCSS = $params["class"] . " " . $tableCSS;
+		}
+		echo "\n<table id='" . $nav . "' class='" . $tableCSS . "' cellpadding='3' cellspacing='0' border='0' width='" . $totalWidth . "'>\n";
+		echo $colGroup;
 	}
 
 	protected function renderHeader($nav, $msg, $params) {
 		global $key;
 		$j = 0;
-		echo "<thead>\n";
-		echo "<tr>\n";
 		
-		foreach ($this->myprops as $property) {
-			$params['width'] = (isset($this->columnWidths[$j]))?$this->columnWidths[$j]:"100";
-			$params['label'] = (isset($this->columnLabels[$j]))?$this->columnLabels[$j]:$msg->getProperty($property)->getDescription();
-			switch ($property) {
-		        case $key :
-					break;        		
-				case "Update" :
-					echo "\t<th width='" . $params['width'] . "' />";
-					break;
-				case "Delete" :
-					echo "\t<th width='" . $params['width'] . "' />";
-					break;
-				default :
-					echo "\t<th width='" . $params['width'] . "' class='sortable-text'>" . $params['label'] . "</th>\n";
+		if(is_array($this->columnLabels)) {
+			echo "<thead>\n";
+			echo "<tr>\n";
+			
+			foreach ($this->myprops as $property) {
+				$params['label'] = (isset($this->columnLabels[$j]))?$this->columnLabels[$j]:$msg->getProperty($property)->getDescription();
+				switch ($property) {
+			        case $key :
+						break;        		
+					case "Update" :
+						echo "\t<th/>";
+						break;
+					case "Delete" :
+						echo "\t<th/>";
+						break;
+					default :
+						echo "\t<th class='sortable-text'>" . $params['label'] . "</th>\n";
+				}
+				$j++;
 			}
-			$j++;
+			echo "</tr>\n";
+			echo "</thead>\n";
 		}
-		echo "</tr>\n";
-		echo "</thead>\n";
 		echo "<tbody>\n";
 	}
 	protected function render($nav, $msg, $params) {
