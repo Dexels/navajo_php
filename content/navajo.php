@@ -1,5 +1,4 @@
 <?php
-jimport('joomla.event.plugin');
 defined("_JEXEC") or die("Restricted access");
 
 $joomlaSessionName = session_name();
@@ -13,11 +12,12 @@ require_once "navajo/navajo.php";
 require_once "navajo/client/NavajoClient.php";
 require_once "navajo/document/NavajoDoc.php";
 require_once "navajo/phpclient/NavajoPhpClient.php";
-
+include_once 'navajo/NavajoHandler.php';
 //echo 'Session name: '.$joomlaSessionName;
 session_name($joomlaSessionName);
 session_start();
 require_once "navajo/NavajoHandler.php";
+jimport('joomla.event.plugin');
 
 class plgContentNavajo extends JPlugin
 {
