@@ -44,12 +44,14 @@ class NavajoPhpClient {
     }
 
     static function showNavajo($navajo, $params) {
-        $messages = $navajo->getMessages();
-        foreach ($messages as $current) {
-            self :: showMessage($navajo, $current, $params);
-        }
-        self :: showMethods($navajo);
-    }
+    	if(is_object($navajo)) {
+	        $messages = $navajo->getMessages();
+	        foreach ($messages as $current) {
+	            self :: showMessage($navajo, $current, $params);
+	        }
+	        self :: showMethods($navajo);
+	    	}
+    	}
 
     static function showMessage($navajo, $message, $params) {
    
@@ -247,7 +249,7 @@ class NavajoPhpClient {
                     NavajoPhpClient :: outputDateProperty($nav, $property, $id, $params, $classsuffix);
                     break;
                 case "memo" :
-                    NavajoPhpClient :: outputMemoProperty($nav, $property, $id, $params, $classsuffix);
+                    NavajoPhpClient :: outputMemoProperty($nav, $property, $id, $params, $classsuffix, $blnDescription);
                     break;
 
                 case "binary" :
@@ -369,8 +371,8 @@ class NavajoPhpClient {
 
        // $config = JFactory :: getConfig();
         //$site = $config->getValue("config.sitename");
-        $site = "";
-
+        $site = "beheer";
+echo "BInARYAAP";
         $rr = explode("|", $id);
         $service = $rr[1];
         $path = $rr[2];
@@ -402,35 +404,35 @@ class NavajoPhpClient {
         }
         switch ($extension) {
             case "jpg" :
-                echo "\n<img src='" . $site . "plugins/content/navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
+                echo "\n<img src='/" . $site . "/components/com_navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
                 break;
             case "gif" :
-                echo "\n<img src='" . $site . "plugins/content/navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
+                echo "\n<img src='/" . $site . "/components/com_navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
                 break;
             case "png" :
-                echo "\n<img src='" . $site . "plugins/content/navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
+                echo "\n<img src='/" . $site . "/components/com_navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
                 break;
             case "pdf" :
-                echo "\n<a href='" . $site . "plugins/content/navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'>download <img src='/images/M_images/pdf_button.png' border='0' /></a>";
+                echo "\n<a href='/" . $site . "/components/com_navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'>download <img src='/images/M_images/pdf_button.png' border='0' /></a>";
                 break;
             case "dat" :
             	echo "<p id='player1'><a href='http://www.macromedia.com/go/getflashplayer'>Get the Flash Player</a> to see this player.</p>";
             	echo "<script type='text/javascript'>";
-				echo "var FO = { movie:\"" . $site . "plugins/content/flvplayer.swf\"," .
+				echo "var FO = { movie:\"/" . $site . "/components/com_navajo/flvplayer.swf\"," .
 								"width:\"300\"," .
 								"height:\"170\"," .
 								"majorversion:\"7\"," .
 								"build:\"0\"," .
 								"bgcolor:\"#FFFFFF\"," .
 								"allowfullscreen:\"false\"," .
-								"flashvars:\"file=http://".$_SERVER["HTTP_HOST"] ."" . $site . "plugins/content/navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&path=" . $path . "&joomlaSession=" . $joomlaSession . "};";
-								//"flashvars:\"file=" . $site . "plugins/content/video.flv\" };";
+								"flashvars:\"file=http://".$_SERVER["HTTP_HOST"] ."/" . $site . "/components/com_navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&path=" . $path . "&joomlaSession=" . $joomlaSession . "};";
+								//"flashvars:\"file=/" . $site . "/components/com_navajo/video.flv\" };";
 				echo "UFO.create( FO, \"player1\");";
 				echo "</script>";
             	/*
             	echo "\n<script language='JavaScript'>";                            
-            	echo "\nvar flash = new show_flash('http://".$_SERVER["HTTP_HOST"] ."" . $site . "plugins/content/xevidwidebotplus.swf?" .
-            		    "myfilm1=http://".$_SERVER["HTTP_HOST"] ."" . $site . "plugins/content/navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&path=" . $path . "&joomlaSession=" . $joomlaSession . 
+            	echo "\nvar flash = new show_flash('http://".$_SERVER["HTTP_HOST"] ."/" . $site . "/components/com_navajo/xevidwidebotplus.swf?" .
+            		    "myfilm1=http://".$_SERVER["HTTP_HOST"] ."/" . $site . "/components/com_navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&path=" . $path . "&joomlaSession=" . $joomlaSession . 
             			"&amp;mytext1=..." .
             			"&amp;automode=1" .
             			"&amp;embcode=0" .
@@ -439,7 +441,7 @@ class NavajoPhpClient {
             			"&amp;img=no" .
             			"&amp;width=352" .
             			"&amp;height=318" .
-            			"&amp;embed=http://".$_SERVER["HTTP_HOST"] ."" . $site . "plugins/content/xevidwidebotplus.swf?myfilm1=http://".$_SERVER["HTTP_HOST"] ."" . $site . "plugins/content/navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&path=" . $path . "&joomlaSession=" . $joomlaSession . "'" .
+            			"&amp;embed=http://".$_SERVER["HTTP_HOST"] ."/" . $site . "/components/com_navajo/xevidwidebotplus.swf?myfilm1=http://".$_SERVER["HTTP_HOST"] ."/" . $site . "/components/com_navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&path=" . $path . "&joomlaSession=" . $joomlaSession . "'" .
             			", 'xevidwidebotplus'" .
             			", '352'" .
             			", '318'" .
@@ -488,7 +490,7 @@ class NavajoPhpClient {
         if ($blnDescription) {
           echo "<div class='property_value'>" . html_entity_decode($value) . "</div>";
         } else {
-          echo nl2br(html_entity_decode($value));
+          echo html_entity_decode($value);
         }
     }
 
@@ -523,12 +525,12 @@ class NavajoPhpClient {
     static function outputBinaryProperty($nav, $property, $id, $params, $classsuffix) {
         $config = JFactory :: getConfig();
         # $site = $config->getValue("config.sitename");
-        $site = "";
+        $site = "beheer";
 
         $rr = explode("|", $id);
         $service = $rr[1];
         $path = $rr[2];
-
+		echo 'outputBinaryProperty';
         $joomlaSession = session_name();
 
         # store the binary value in an array
@@ -551,16 +553,16 @@ class NavajoPhpClient {
         
         switch ($extension) {
             case "jpg" :
-                echo "<img src='" . $site . "plugins/content/navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
+                echo "<img src='/" . $site . "/components/com_navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
                 break;
             case "gif" :
-                echo "<img src='" . $site . "plugins/content/navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
+                echo "<img src='/" . $site . "/components/com_navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
                 break;
             case "png" :
-                echo "<img src='" . $site . "plugins/content/navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
+                echo "<img src='/" . $site . "/components/com_navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
                 break;
             case "pdf" :
-                echo "<a href='" . $site . "plugins/content/navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'><img src='/" . $site . "/images/M_images/pdf_button.png' border='0' /> download</a>";
+                echo "<a href='/" . $site . "/components/com_navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'><img src='/" . $site . "/images/M_images/pdf_button.png' border='0' /> download</a>";
                 break;
             default :
                 echo "";
