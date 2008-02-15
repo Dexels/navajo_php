@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <project name="NavajoAuthPlugin" default="all" basedir=".">
-	<property name="liveSite" value="../clubsite" />
+	<property name="liveSite" value="../joomlaStable" />
 	<property name="livePlugin" value="${liveSite}/plugins" />
 	<property name="archive" value="${ant.project.name}.jar" />
 
 	<target name="clean">
-		<delete file="${archive}" />
+		<delete file="navajo_user.zip" />
+		<delete file="navajo_authorization.zip" />
+		<delete file="navajo_content.zip" />
 	</target>
 
 	<target name="authorization">
@@ -25,6 +27,11 @@
 		</zip>
 	</target>
 	
+	<target name="component">
+		<zip zipfile="navajo_component.zip">
+			<fileset dir="component" />
+		</zip>
+	</target>
 	<target name="copytolive">
 		<copy todir="${livePlugin}/content">
 			<fileset dir="content" />
@@ -35,10 +42,17 @@
 		<copy todir="${livePlugin}/user">
 			<fileset dir="user" />
 		</copy>
+		<copy todir="${liveSite}/components/com_navajo">
+			<fileset dir="component/site" />
+		</copy>
+		<copy todir="${liveSite}/administrator/components/com_navajo">
+			<fileset dir="component/admin" />
+		</copy>
+		
 	</target>
 
 
-	<target name="all" depends="authorization,user,content,copytolive" />
+	<target name="all" depends="authorization,user,content,copytolive,component" />
 
 </project>
 <!-- EOF: $RCSfile$ -->
