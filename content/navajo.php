@@ -1,8 +1,10 @@
 <?php
 defined("_JEXEC") or die("Restricted access");
 
-$joomlaSessionName = session_name();
-session_write_close();
+//$joomlaSessionName = session_name();
+//session_write_close();
+
+
 //ini_set("session.save_handler", "files");
 
 
@@ -14,8 +16,10 @@ require_once "navajo/document/NavajoDoc.php";
 require_once "navajo/phpclient/NavajoPhpClient.php";
 include_once 'navajo/NavajoHandler.php';
 //echo 'Session name: '.$joomlaSessionName;
-session_name($joomlaSessionName);
-session_start();
+
+//session_name($joomlaSessionName);
+//session_start();
+
 require_once "navajo/NavajoHandler.php";
 jimport('joomla.event.plugin');
 
@@ -48,7 +52,7 @@ class plgContentNavajo extends JPlugin
 	 * @param 	object		The article params
 	 * @param 	int			The 'page' number
 	 */
-	function onPrepareContent( &$article, &$params, $limitstart )
+	function onPrepareContent( &$article, &$params )
 	{
 //		echo 'onPrepareContent';
 		global $mainframe;
@@ -65,7 +69,7 @@ class plgContentNavajo extends JPlugin
 	 * @param 	int			The 'page' number
 	 * @return	string
 	 */
-	function onAfterDisplayTitle( &$article, &$params, $limitstart )
+	function onAfterDisplayTitle( &$article, &$params )
 	{
 //		echo 'onAfterDisplayTitle';
 		global $mainframe;
@@ -82,7 +86,7 @@ class plgContentNavajo extends JPlugin
 	 * @param 	int			The 'page' number
 	 * @return	string
 	 */
-	function onBeforeDisplayContent( &$article, &$params, $limitstart )
+	function onBeforeDisplayContent( &$article, &$params )
 	{
 //		echo 'onBeforeDisplayContent';
 		global $mainframe;
@@ -113,7 +117,7 @@ class plgContentNavajo extends JPlugin
 	 * @param 	int			The 'page' number
 	 * @return	string
 	 */
-	function onAfterDisplayContent( &$article, &$params, $limitstart )
+	function onAfterDisplayContent( &$article, &$params )
 	{
 		global $mainframe;
 //		echo 'onAfterDisplayContent';
