@@ -1,5 +1,5 @@
 <?php
-jimport('joomla.event.plugin');
+//jimport('joomla.event.plugin');
 
 //$joomlaSessionName = session_name();
 //session_write_close();
@@ -167,8 +167,8 @@ function errorMessageInclude($result) {
 function startNavajoInclude() {
     $msg = "<script type='text/javascript' src='includes/js/tablesort.js'></script>\n" .
            "<div class='navajo'><form action='index.php' method='POST' enctype='multipart/form-data'>\n" .
-           "<input type='hidden' name='option' value='com_content'/>\n" .
-           "<input type='hidden' name='view' value='article'/>\n"; 
+           "<input type='hidden' name='option' value='com_navajo'/>\n" .
+           "<input type='hidden' name='task' value='storeNavajo'/>\n"; 
     return $msg;
 }
 
@@ -406,12 +406,12 @@ function submitInclude($matches) {
     if (isset ($_REQUEST["Itemid"])) {
         echo "<input type='hidden' name='" . $label . ":itemid' value='" . $_REQUEST["Itemid"] . "'/>";
     }
-    echo "<input type='submit' name='direction' value='" . $label . "'/>";
-    echo "<input type='hidden' name='" . $label . "' value='" . $id . "'/>";
-    echo "<input type='hidden' name='" . $label . ":serverCall' value='" . $services . "'/>";
-    echo "<input type='hidden' name='" . $label . ":id' value='" . $id . "'/>";
-    echo "<input type='hidden' name='joomlaSession' value='" . session_name() . "'/>";
-    echo "<input type='hidden' name='joomlaPath' value='" . $config->getValue("config.sitename") . "'/>";
+    echo "<input type='submit' name='direction' value='" . $label . "'/>\n";
+    echo "<input type='hidden' name='" . $label . "' value='" . $id . "'/>\n";
+    echo "<input type='hidden' name='" . $label . ":serverCall' value='" . $services . "'/>\n";
+    echo "<input type='hidden' name='" . $label . ":id' value='" . $id . "'/>\n";
+    echo "<input type='hidden' name='joomlaSession' value='" . session_name() . "'/>\n";
+    echo "<input type='hidden' name='joomlaPath' value='" . $config->getValue("config.sitename") . "'/>\n";
 
 }
 
