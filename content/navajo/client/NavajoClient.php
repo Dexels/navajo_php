@@ -80,18 +80,11 @@ class NavajoClient {
 		
         $body = curl_exec($ch);
 
-//		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-
-	//	$header_size = strchr($body,"<tml>");
-		//$headers = substr($body, 0, $header_size);
-	    //$result = substr($body, $header_size);
-		$err = curl_error($ch);
+	$err = curl_error($ch);
         $result = $body;
-		echo '<!-- Received error: '.$err.'-->';
         
-		if (!is_null($err) && ''!=$err) {
+	if (!is_null($err) && ''!=$err) {
             echo ('<h2>SERVER CONNECTION ERROR:</h2> Error calling service: ' . $serv.'<br/> message: '.$err);
-            
             exit;
         }
 		
@@ -106,7 +99,6 @@ class NavajoClient {
         $session->set('navajoclass@' . $service, $res, 'navajo');
         $session->set('currentNavajo', $service, 'navajo');
 
-        /**/
 		
         $error = $res->getMessage('error');
         

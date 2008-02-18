@@ -1,7 +1,7 @@
 <?php
 class NavajoPhpClient {
 
-    static function showTable($navname, $msgpath, $columns, $params="", $columnWidths = "", $columnLabels = "", $updateNavajo = "", $deleteNavajo = "") {
+    static function showTable($navname, $msgpath, $columns, $params="", $columnWidths = "", $columnLabels = "", $columnDirections = "", $updateNavajo = "", $deleteNavajo = "") {
         require_once "NavajoLayout.php";   
         $result = getNavajo($navname);
 
@@ -16,7 +16,7 @@ class NavajoPhpClient {
             $layout = new $params["customLayout"]($columns);
           } else {
             require_once "AdvancedTableLayout.php";   
-       	    $layout = new AdvancedTableLayout($columns, $params, $columnWidths, $columnLabels);
+       	    $layout = new AdvancedTableLayout($columns, $params, $columnWidths, $columnLabels, $columnDirections);
         }
         if($updateNavajo != "") {
             echo "<input type='submit' name='submit' class='updateBtn hidden' value='Update_" . $navname . "' />";

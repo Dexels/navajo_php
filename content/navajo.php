@@ -88,21 +88,22 @@ class plgContentNavajo extends JPlugin
 	 */
 	function onBeforeDisplayContent( &$article, &$params )
 	{
-//		echo 'onBeforeDisplayContent';
 		global $mainframe;
+		
 		$authPlugin = JPluginHelper::getPlugin('content','navajo');
+		$pluginParams = new JParameter( $authPlugin->params );		
+		$navajoUsername = (isset($_SESSION['navajoUsr']))?('#' . $_SESSION['navajoUsr']):('#' . $pluginParams->get('navajoUsername'));
+		$navajoPassword = (isset($_SESSION['navajoPwd']))?$_SESSION['navajoPwd']:('#' . $pluginParams->get('navajoPassword'));
+		$unionCode      = (isset($_SESSION['unionCode']))?$_SESSION['unionCode']:$pluginParams->get('unionCode');
+		$navajoServer   = $pluginParams->get('navajoServer') . '/sportlink/' . strtolower($unionCode) . '/servlet/Postman';
 		
-		$pluginParams = new JParameter( $authPlugin->params );
-		$server = $pluginParams->get('navajoServer');
-		$clubId = $pluginParams->get('clubId');
-		$navajoUsername = $pluginParams->get('navajoUsername');
-		$navajoPassword = $pluginParams->get('navajoPassword');
-		startupNavajo($server,$navajoUsername ,$navajoPassword);
+		//echo "Server : " . $navajoServer . ", NavajoUsr : " . $navajoUsername . ", NavajoPwd : " . $navajoPassword;			
 		
-		//function navajoTags($published, $row, & $params, $page = 0) {
-	initNavajo();
-	//	$article->text = 'APENOOT!';
-	$article->text = replaceTags($article->text);
+		startupNavajo($navajoServer, $navajoUsername , $navajoPassword);
+		
+		initNavajo();
+		
+		$article->text = replaceTags($article->text);
 		
 		return '';
 	}

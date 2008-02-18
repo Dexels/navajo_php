@@ -373,7 +373,12 @@ function tableInclude($matches) {
     } else {
     	$columnLabels = "";
     }
-    
+    if (isset($matches["columnDirections"])) {
+        $columnDirectionsString = $matches["columnDirections"];
+        $columnDirections = explode(",", $columnDirectionsString);
+    } else {
+    	$columnDirections = "";
+    }
     # "target" attribute is set to the alias of an article; get corresponding articleid from J! database
     if (isset($matches["target"])) {
    	    $alias = $matches["target"];

@@ -4,10 +4,11 @@ class AdvancedTableLayout extends NavajoLayout {
 	var $myprops;
 	var $columnWidths;
 
-	function __construct($properties, $params, $columnWidths="", $columnLabels="") {
-		$this->myprops = $properties;
-		$this->columnWidths = $columnWidths;
-		$this->columnLabels = $columnLabels;
+	function __construct($properties, $params, $columnWidths="", $columnLabels="", $columnDirections="") {
+		$this->myprops          = $properties;
+		$this->columnWidths     = $columnWidths;
+		$this->columnLabels     = $columnLabels;		
+		$this->columnDirections = $columnDirections;
 	}
 
 	protected function beforeRendering($nav, $params) {
@@ -23,21 +24,19 @@ class AdvancedTableLayout extends NavajoLayout {
 		if(is_array($this->columnWidths)) {
 			$colGroup = "<colgroup>\n";
 			foreach ($this->columnWidths as $currentWidth) {
-                        	if($currentWidth != 0) {
-					$totalWidth += $currentWidth + 3;
-					$colGroup .= "<col width='". $currentWidth . "px'/>\n";	
-				}	
+				$totalWidth += $currentWidth + 3;
+				$colGroup .= "<col width='". $currentWidth . "px'/>\n";
 			}
 			$colGroup .= "</colgroup>\n";
 		} else {
 			$totalWidth = "100%";
 			$colGroup = "";
 		}
-		$tableCSS = "sortable rowstyle-alt no-arrow";
+		$tableCSS = "sortable-onload-1 rowstyle-alt no-arrow";
 		if(isset($params["class"])) {
 			$tableCSS = $params["class"] . " " . $tableCSS;
 		}
-		echo "\n<table id='" . $nav . "' class='" . $tableCSS . "' cellpadding='3' cellspacing='0' border='0' width='" . $totalWidth . "'>\n";
+		echo "\n<table id='" . str_replace("/", "_", $nav) . "' class='" . $tableCSS . "' cellpadding='3' cellspacing='0' border='0' width='" . $totalWidth . "'>\n";
 		echo $colGroup;
 	}
 
@@ -73,7 +72,7 @@ class AdvancedTableLayout extends NavajoLayout {
 	protected function render($nav, $msg, $params) {
 		global $i, $key, $link, $id, $itemId;
 		$j = 0;
-		
+		$blnOut = false;
 		$keyValue = null;
 		$sfx = ($i % 2) ? "odd" : "even";
 		echo "<tr class='row_" . $sfx . "'>\n";
@@ -101,8 +100,13 @@ class AdvancedTableLayout extends NavajoLayout {
 		        	echo "</td>\n";
 		        	break;
 				default :
+				   
 				    echo "\t<td>";
-					NavajoPhpClient :: showProperty($nav, $property, $msg, $params, false, false, "");
+				     if(is_array($this->columnDirections)){
+				       $blnOut = ($this->columnDirections[$j] == "in")?false:true;
+				    }
+				    
+					NavajoPhpClient :: showProperty($nav, $property, $msg, $params, $blnOut, false, "");
 					echo "</td>\n";
 			}
 			
