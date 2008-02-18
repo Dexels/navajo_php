@@ -391,7 +391,7 @@ function tableInclude($matches) {
         $matches["Itemid"] = $_REQUEST["Itemid"];
     }
 
-    NavajoPhpClient :: showTable($navajo, $path, $columns, $matches, $columnWidths, $columnLabels);
+    NavajoPhpClient :: showTable($navajo, $path, $columns, $matches, $columnWidths, $columnLabels, $columnDirections);
 }
 
 function submitInclude($matches) {
