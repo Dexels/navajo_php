@@ -7,19 +7,21 @@ abstract class NavajoLayout {
 
     public function doRender($nav, $amsg, $params) {
         $myNavajo = getNavajo($nav);
-        $this->beforeRendering($nav, $params);
         $subm = $amsg->getSubMessages();
         if ($amsg->getArraySize() > 0) {
+            $this->beforeRendering($nav, $params);
             $keys = array_keys($subm);
             $cc = count($keys);
             $elt = $subm[0];
             $this->renderHeader($nav, $elt, $params);
-        }
-
-        foreach ($subm as $mm) {
+            foreach ($subm as $mm) {
                 $this->render($nav, $mm, $params);
+            }
+            $this->renderFooter($nav, $amsg, $params);
+            $this->afterRendering($nav, $params);
+        } else {
+            echo "<p>Niets gevonden..</p>";
         }
-        $this->afterRendering($nav, $params);
     }
 
     protected function afterRendering($nav, $params) {

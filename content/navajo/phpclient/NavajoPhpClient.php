@@ -521,16 +521,16 @@ echo "BInARYAAP";
         $value = date("d/m/Y", strtotime($property->getAttribute("value")));
         echo $value;
     }
-
+    
     static function outputBinaryProperty($nav, $property, $id, $params, $classsuffix) {
         $config = JFactory :: getConfig();
         # $site = $config->getValue("config.sitename");
-        $site = "beheer";
+        $site = "";
 
         $rr = explode("|", $id);
         $service = $rr[1];
         $path = $rr[2];
-		echo 'outputBinaryProperty';
+
         $joomlaSession = session_name();
 
         # store the binary value in an array
@@ -553,16 +553,16 @@ echo "BInARYAAP";
         
         switch ($extension) {
             case "jpg" :
-                echo "<img src='/" . $site . "/components/com_navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
+                echo "<img src='" . $site . "plugins/content/navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
                 break;
             case "gif" :
-                echo "<img src='/" . $site . "/components/com_navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
+                echo "<img src='" . $site . "plugins/content/navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
                 break;
             case "png" :
-                echo "<img src='/" . $site . "/components/com_navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
+                echo "<img src='" . $site . "plugins/content/navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
                 break;
             case "pdf" :
-                echo "<a href='/" . $site . "/components/com_navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'><img src='/" . $site . "/images/M_images/pdf_button.png' border='0' /> download</a>";
+                echo "<a href='" . $site . "plugins/content/navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'><img src='/" . $site . "/images/M_images/pdf_button.png' border='0' /> download</a>";
                 break;
             default :
                 echo "";

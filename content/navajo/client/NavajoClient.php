@@ -222,7 +222,6 @@ function startupNavajo($server, $username, $password) {
 
 function getNavajo($s) {
     global $session;
-    echo' <!-- looking for navajo object in session: navajoclass@' . $s.'-->';
     $navvv = $session->get('navajoclass@' . $s, null, 'navajo');
     if ($navvv != null) {
         return $navvv;

@@ -47,8 +47,7 @@ class NavajoController extends JController
 		*/
 
 	function storeNavajo() {
-		echo "in storeNAvajo";
-	//	print_r( $_REQUEST);
+		//print_r( $_REQUEST);
 //		$joomlaSessionName = session_name();
 	//	session_write_close();
 //		require JPATH_BASE .DS.'plugins'.DS.'content'.DS.'navajo'.DS."client/NavajoClient.php";
