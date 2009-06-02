@@ -36,7 +36,15 @@ class plgContentNavajo extends JPlugin
 		$navajoUsername = (isset($_SESSION['navajoUsr']))?('#' . $_SESSION['navajoUsr']):('#' . $pluginParams->get('navajoUsername'));
 		$navajoPassword = (isset($_SESSION['navajoPwd']))?$_SESSION['navajoPwd']:('#' . $pluginParams->get('navajoPassword'));
 		$unionCode      = (isset($_SESSION['unionCode']))?$_SESSION['unionCode']:$pluginParams->get('unionCode');
-		$navajoServer   = (isset($_SESSION['navajoServer']))?$_SESSION['navajoServer']:$pluginParams->get('navajoServer') . '/sportlink/' . strtolower($unionCode) . '/servlet/Postman';
+                if ( isset($_SESSION['navajoServer']) ) {
+                    $navajoServer = $_SESSION['navajoServer'];
+                } else {
+                    if ( isset($pluginParams->get('navajoPostman') ) {
+                        $navajoServer = $pluginParams->get('navajoPostman');
+                    } else {
+                        $navajoServer = $pluginParams->get('navajoServer') . '/sportlink/' . strtolower($unionCode) . '/servlet/Postman';
+                    }
+                }
 
 		startupNavajo($navajoServer, $navajoUsername , $navajoPassword);
 		
