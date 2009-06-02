@@ -4,7 +4,6 @@ class NavajoPhpClient {
     static function showTable($navname, $msgpath, $columns, $params="", $columnWidths = "", $columnLabels = "", $columnDirections = "", $updateNavajo = "", $deleteNavajo = "") {
         require_once "NavajoLayout.php";   
         $result = getNavajo($navname);
-
         $data = $result->getMessage($msgpath);
         if (is_null($data)) {
             echo ("Message: $msgpath not found in navajo: $navname");
@@ -13,7 +12,7 @@ class NavajoPhpClient {
         }
         if(isset($params["customLayout"])) {
             require_once $params["customLayout"].".php";   
-            $layout = new $params["customLayout"]($columns);
+            $layout = new $params["customLayout"]($columns, $params, $columnWidths, $columnLabels, $columnDirections);
           } else {
             require_once "AdvancedTableLayout.php";   
        	    $layout = new AdvancedTableLayout($columns, $params, $columnWidths, $columnLabels, $columnDirections);
@@ -148,13 +147,11 @@ class NavajoPhpClient {
                echo "<!-- showAbsoluteProperty(): property " . $path . " not found in : " . $navname . "-->";
             } else {
                 $id = $p->getPropertyId();
-                echo "\n<label>";
                 if ($blnDescription) {
                     self :: renderDescription($p, $params, $classsuffix);
                 }
-                echo "\n</label>";
                 self :: renderProperty($nav, $p, $id, $params, $blnOut, $classsuffix);
-                echo "\n<span/>";
+                //echo "\n<span/>";
             }
         }
     }
@@ -248,10 +245,12 @@ class NavajoPhpClient {
                 case "date" :
                     NavajoPhpClient :: outputDateProperty($nav, $property, $id, $params, $classsuffix);
                     break;
-                case "memo" :
-                    NavajoPhpClient :: outputMemoProperty($nav, $property, $id, $params, $classsuffix, $blnDescription);
+                case "clocktime" :
+                    NavajoPhpClient :: outputClockTimeProperty($nav, $property, $id, $params, $classsuffix);
                     break;
-
+                case "memo" :
+                    NavajoPhpClient :: outputMemoProperty($nav, $property, $id, $params, $classsuffix);
+                    break;
                 case "binary" :
                     NavajoPhpClient :: outputBinaryProperty($nav, $property, $id, $params, $classsuffix);
                     break;
@@ -466,7 +465,22 @@ echo "BInARYAAP";
         $value = $property->getAttribute("value");
         if ($value == "")
             $value = "-";
-        echo $value;
+        if(isset($params['subtype']) && $params['subtype'] == 'url') {
+            if ( strpos($value, "http") === false ) {
+                if(isset($params['label'])) {
+	          echo "<a href=\"http://".$value."\" target=\"_blank\" ><input type=\"button\" class=\"labelbutton\" value=\"". $params['label'] ."\" /></a>";
+                } else {
+	          echo "<a href=\"http://".$value."\" target=\"_blank\" >" . $value . "</a>";
+                }
+            } else {
+                if(isset($params['label'])) {
+	          echo "<a href=\"".$value."\" target=\"_blank\" ><input class=\"labelbutton\" type=\"button\" value=\"". $params['label'] ."\" /></a>";
+                } else {
+	          echo "<a href=\"".$value."\" target=\"_blank\" >" . $value . "</a>";
+                }
+            }
+        }
+	else { echo $value; }
     }
 
     static function outputIntegerProperty($nav, $property, $id, $params, $classsuffix) {
@@ -522,6 +536,14 @@ echo "BInARYAAP";
         echo $value;
     }
     
+    static function outputClockTimeProperty($nav, $property, $id, $params, $classsuffix) {
+        $value = $property->getAttribute("value");
+        if($value != '') { 
+            $value = date("H:i", strtotime($value));
+            echo $value;
+        }
+    }
+    
     static function outputBinaryProperty($nav, $property, $id, $params, $classsuffix) {
         $config = JFactory :: getConfig();
         # $site = $config->getValue("config.sitename");
@@ -553,16 +575,19 @@ echo "BInARYAAP";
         
         switch ($extension) {
             case "jpg" :
-                echo "<img src='" . $site . "plugins/content/navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
+                echo "<img src='" . $site . "plugins/content/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
                 break;
             case "gif" :
-                echo "<img src='" . $site . "plugins/content/navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
+                echo "<img src='" . $site . "plugins/content/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
                 break;
             case "png" :
-                echo "<img src='" . $site . "plugins/content/navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
+                echo "<img src='" . $site . "plugins/content/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'/>";
                 break;
             case "pdf" :
-                echo "<a href='" . $site . "plugins/content/navajo/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'><img src='/" . $site . "/images/M_images/pdf_button.png' border='0' /> download</a>";
+                echo "<a href='" . $site . "plugins/content/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'><img src='/" . $site . "/images/M_images/pdf_button.png' border='0' /> download</a>";
+                break;
+            case "ics" :
+                echo "<a href='" . $site . "plugins/content/Binary.php?extension=" . $extension . "&service=" . $service . "&amp;path=" . $path . "&amp;joomlaSession=" . $joomlaSession . "'>download .ICS</a>";
                 break;
             default :
                 echo "";

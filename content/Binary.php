@@ -1,5 +1,5 @@
 <?php
-require_once "client/NavajoClient.php";
+require_once "navajo/client/NavajoClient.php";
 switch ($_REQUEST['extension']) {
     case "jpg" :
         header("Content-type: image/jpeg");
@@ -13,6 +13,10 @@ switch ($_REQUEST['extension']) {
     case "pdf" :
         header("Content-type: application/pdf");
         header("Content-Disposition: attachment; filename=my_binary.pdf");
+        break;
+    case "ics" :
+        header("Content-type: text/calendar");
+        header("Content-Disposition: attachment; filename=my_calendar.ics");
         break;
     default :
         header("Content-type: application/unknown");

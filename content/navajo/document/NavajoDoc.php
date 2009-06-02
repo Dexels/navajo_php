@@ -25,8 +25,6 @@ function dumpElement($element) {
     echo '<br/>ending dump....<br/>';
 }
 
-//$a = new Navajo();
-
 class Navajo extends BaseNode {
 
     public $messages = array ();
@@ -133,9 +131,9 @@ class Navajo extends BaseNode {
     }
     
     public function parseXml($xmlText) {
-        if ($xmlText == '') {
+        error_reporting(E_ERROR);
+        if (trim($xmlText) == '') {
             echo('Warning: Empty xml supplied!');
-		//	trace('Warning: Empty xml supplied!');
             return;
         }
         $doc = new DOMDocument('1.0', 'iso-8859-1');
@@ -144,7 +142,6 @@ class Navajo extends BaseNode {
     }
 
     public function parse($domNode) {
-
         $nodelist = $domNode->childNodes;
         for ($i = 0; $i < $nodelist->length; $i++) {
             $item = $nodelist->item($i);

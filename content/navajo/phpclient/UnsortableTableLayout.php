@@ -1,5 +1,5 @@
 <?php
-class AdvancedTableLayout extends NavajoLayout {
+class UnsortableTableLayout extends NavajoLayout {
     var $i;
     var $myprops;
     var $columnWidths;
@@ -12,10 +12,9 @@ class AdvancedTableLayout extends NavajoLayout {
     }
 
     protected function beforeRendering($nav, $params) {
-        global $i, $key, $subkey, $link, $id, $itemId, $colGroup, $tableCSS, $totalWidth;
-        $i = 1;
+        global $i, $key, $link, $id, $itemId, $colGroup, $tableCSS, $totalWidth;
+        $i = 0;
         $key    = (isset($params["key"]))?$params["key"]:null;
-        $subkey = (isset($params["subkey"]))?$params["subkey"]:null;
         $link   = (isset($params["link"]))?$params["link"]:null;
         $id     = (isset($params["id"]))?$params["id"]:null;
         $itemId = (isset($params["Itemid"]))?$params["Itemid"]:null;
@@ -42,7 +41,7 @@ class AdvancedTableLayout extends NavajoLayout {
     }
 
     protected function renderHeader($nav, $msg, $params) {
-        global $key, $subkey, $colGroup, $tableCSS, $totalWidth;
+        global $key, $colGroup, $tableCSS, $totalWidth;
         $j = 0;
         
         echo "\n<table id='" . str_replace("/", "_", $nav) . "' class='" . $tableCSS . "' cellpadding='3' cellspacing='0' border='0' width='" . $totalWidth . "'>\n";
@@ -59,8 +58,6 @@ class AdvancedTableLayout extends NavajoLayout {
                 switch ($property) {
                     case $key :
                         break;                
-                    case $subkey :
-                        break;                
                     case "Update" :
                         echo "\t<th/>";
                         break;
@@ -68,7 +65,7 @@ class AdvancedTableLayout extends NavajoLayout {
                         echo "\t<th/>";
                         break;
                     default :
-                        echo "\t<th axis='" . $type . "'>" . $params['label'] . "</th>\n";
+                        echo "\t<th >" . $params['label'] . "</th>\n";
                 }
                 $j++;
             }
@@ -78,11 +75,10 @@ class AdvancedTableLayout extends NavajoLayout {
         echo "<tbody>\n";
     }
     protected function render($nav, $msg, $params) {
-        global $i, $key, $subkey, $link, $id, $itemId;
+        global $i, $key, $link, $id, $itemId;
         $j = 0;
         $blnOut = false;
         $keyValue = null;
-        $subkeyValue = null;
         $sfx = ($i % 2) ? "" : "altRow";
         echo "<tr id='" . $i . "' class='" . $sfx . "'>\n";
         foreach ($this->myprops as $property) {
@@ -90,10 +86,6 @@ class AdvancedTableLayout extends NavajoLayout {
                 case $key :
                     $p = $msg->getProperty($property);
                     $keyValue = $p->getValue();
-                    break;
-                case $subkey :
-                    $p = $msg->getProperty($property);
-                    $subkeyValue = $p->getValue();
                     break;
                 case "Update" :
                     echo "\t<td>";
@@ -112,19 +104,9 @@ class AdvancedTableLayout extends NavajoLayout {
                     echo "<a target='_new' href='" . $keyValue . "'>Toon route</a>";
                     echo "</td>\n";
                     break;
-                case "Email" :
-                    $p = $msg->getProperty($property);
-                    echo "\t<td>";
-                    echo "<a href=\"mailto:" . $p->getValue() . "\">" . $p->getValue() . "</a>";
-                    echo "</td>\n";
-                    break;
                 case $link :
                        echo "\t<td>";
-                    if ( $keyValue != null && $subkeyValue != null ) {
-                      echo "<a href='index.php?option=com_content&view=article&id=" . $id . "&Itemid=" . $itemId . "&" . $key . "=" . $keyValue . "&" . $subkey . "=" . $subkeyValue . "'>";
-                      NavajoPhpClient :: showProperty($nav, $property, $msg, $params, false, false, "");
-                      echo "</a>"; 
-                    } else if (  $keyValue != null ) {
+                       if ( $keyValue != null ) {
                       echo "<a href='index.php?option=com_content&view=article&id=" . $id . "&Itemid=" . $itemId . "&" . $key . "=" . $keyValue . "'>";
                       NavajoPhpClient :: showProperty($nav, $property, $msg, $params, false, false, "");
                       echo "</a>"; 
@@ -134,10 +116,12 @@ class AdvancedTableLayout extends NavajoLayout {
                     echo "</td>\n";
                     break;
                 default :
+                   
                     echo "\t<td>";
                      if(is_array($this->columnDirections)){
                        $blnOut = ($this->columnDirections[$j] == "in")?false:true;
                     }
+                    
                     NavajoPhpClient :: showProperty($nav, $property, $msg, $params, $blnOut, false, "");
                     echo "</td>\n";
             }
@@ -151,20 +135,7 @@ class AdvancedTableLayout extends NavajoLayout {
     protected function renderFooter($nav, $msg, $params) {
         echo "</tbody>\n";
         echo "</table>\n";
-        if (isset($this->columnLabels[0]) && sizeof($this->columnLabels) != 0 ) {
-            if (isset($params['sortColumn'])) { $sortOn = ", sortOn: '" . ( $params['sortColumn'] - 1 ) . "'"; } else { $sortOn = ", sortOn: '0'"; }
-            if (isset($params['sortOrder'])) { $sortOrder = ", sortBy: '" . strtoupper($params['sortOrder']) . "'"; } else { $sortOrder = ", sortBy: 'ASC'"; }
-            if (!isset($params['sortColumn']) OR $params['sortColumn'] != '-1') {
-                echo "<script type='text/javascript'>\n";
-                echo "\tvar myTable = {};\n";
-                echo "\twindow.addEvent('domready', function() {\n";
-                echo "\t\tmyTable = new sortableTable('" . str_replace("/", "_", $nav) . "', {overCls: 'over'" . $sortOn . $sortOrder . ", onClick: function(){}});";
-                echo "\t});\n";
-                echo "</script>\n";
-            }
-        }
     }
-
     protected function afterRendering($nav, $params) {
     
     }

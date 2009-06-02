@@ -3,33 +3,25 @@ error_reporting(E_ALL);
 
 class navajoSession {
     function get($name, $default, $namespace) {
-    	return JFactory::getSession()->get($name,$default,$namespace);
-//        if (isset ($_SESSION[$name . $namespace])) {
-//            //echo 'navajoSession: '.$name.' found! (Namespace: '.$namespace.')';
-//            return $_SESSION[$name . $namespace];
-//        }
-//        return $default;
+        return JFactory::getSession()->get($name,$default,$namespace);
     }
 
     function set($name, $value, $namespace) {
-		JFactory::getSession()->set($name,$value,$namespace);
-    	//$_SESSION[$name . $namespace] = $value;
+        JFactory::getSession()->set($name,$value,$namespace);
     }
     function clear($name, $namespace) {
         JFactory::getSession()->set($name,$value,$namespace);
-    	unset ($_SESSION[$name . $namespace]);
+        unset ($_SESSION[$name . $namespace]);
     }
 }
 
 global $session;
 $session = new navajoSession();
 
-//JFactory::getSession()->get();
 class NavajoClient {
 
     static function getServer() {
         global $session;
-
         $server = $session->get('navajoServer', '', 'navajo');
         return $server;
     }
@@ -76,19 +68,18 @@ class NavajoClient {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $contents);
-		
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $contents);
+        
         $body = curl_exec($ch);
 
-	$err = curl_error($ch);
+        $err = curl_error($ch);
         $result = $body;
         
-	if (!is_null($err) && ''!=$err) {
+        if (!is_null($err) && ''!=$err) {
             echo ('<h2>SERVER CONNECTION ERROR:</h2> Error calling service: ' . $serv.'<br/> message: '.$err);
             exit;
         }
-		
-		
+        
         curl_close($ch);
         $res = new Navajo();
 
@@ -99,7 +90,6 @@ class NavajoClient {
         $session->set('navajoclass@' . $service, $res, 'navajo');
         $session->set('currentNavajo', $service, 'navajo');
 
-		
         $error = $res->getMessage('error');
         
         if (!is_null($error)) {
@@ -119,7 +109,7 @@ class NavajoClient {
             exit();
         }
         //;
-	        return $res;
+            return $res;
     }
 
     static function callInitService($service) {
@@ -145,6 +135,14 @@ class NavajoClient {
             $session = new navajoSession();
         $currentNavajo = $session->get('currentNavajo', '', 'navajo');
         return $currentNavajo;
+    }
+
+    static function setCurrentNavajo($service) {
+        global $session;
+        if (is_null($session))
+            $session = new navajoSession();
+        $session->set('currentNavajo', $service, 'navajo');
+        return $service;
     }
 
     static function updateNavajoFromPost() {

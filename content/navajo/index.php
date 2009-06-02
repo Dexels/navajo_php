@@ -1,23 +1,11 @@
 <?php
-//jimport('joomla.event.plugin');
-
-//$joomlaSessionName = session_name();
-//session_write_close();
 defined("_JEXEC") or die("Restricted access");
-
-//ini_set("session.save_handler", "files");
 
 require_once "client/NavajoClient.php";
 require_once "document/NavajoDoc.php";
 require_once "phpclient/NavajoPhpClient.php";
-//require_once "NavajoHandler.php";
-
-//session_name($joomlaSessionName);
-//session_start();
-
 
 function initNavajo() {
-
     if (isset ($_REQUEST["direction"])) {
         $dir = $_REQUEST["direction"];
         $servCall = $_REQUEST[$dir . ":serverCall"];
@@ -46,42 +34,35 @@ function initNavajo() {
             }
         }
     }
-
-//    $session = JFactory :: getSession();
-//    if (!$session->has("site", "navajo")) {
-//        $site = new ClubSite();
-//        $session->set("site", $site, "navajo");
-//        $site->onStartSession();
-///    }
 }
 
 function navajoTags($published, $row, & $params, $page = 0) {
- 	 $currentPublished = $published;
-   $published->text = replaceTags($published->text);
+    $currentPublished = $published;
+    $published->text = replaceTags($published->text);
 }
 
 function navajo($text) {
-	replaceTags($text);
+    replaceTags($text);
 }
 
 function endnavajo() {
-	if (!isset ($_POST['redirect'])) {
-	    $_SESSION['site']->echoFooter();
-	}
+    if (!isset ($_POST['redirect'])) {
+        $_SESSION['site']->echoFooter();
+    }
 }
+
 function startnavajo() {
-	if (!isset ($_POST['redirect'])) {
-	    $_SESSION['site']->echoHeader();
-	}
-	
+    if (!isset ($_POST['redirect'])) {
+        $_SESSION['site']->echoHeader();
+    }
+    
 }
 
 function replaceTags($text) {
-     initNavajo();
-     
+    initNavajo();
     $regex = "#{(//|errors|back|label|classsuffix|showall|showmessage|showmethod|element|table|submit|service|setvalue|setusername)(.*?)}#s";
-	$result = startNavajoInclude() . preg_replace_callback($regex, "navajoTagReplacer",$text) . endNavajoInclude();
-	return $result;
+    $result = startNavajoInclude() . preg_replace_callback($regex, "navajoTagReplacer",$text) . endNavajoInclude();
+    return $result;
 }
 
 function screenInclude($params) {
@@ -91,8 +72,25 @@ function screenInclude($params) {
 }
 
 function replaceTag($tag, $paramstring) {
-	 $paramstring = "   " . $paramstring;
-	//echo $tag;
+    # do a little formatting on the paramstring to make the plugin a little more forgiving
+    # append a space to possible open tags; trim and strip html tags; 
+    # replace multiple spaces by one space; change a space between quotes to an underscore
+    $paramstring = str_replace("<", " <", $paramstring);
+    $paramstring = str_replace(", ", ",", $paramstring);
+    $paramstring = strip_tags(trim($paramstring));
+    $paramstring = ereg_replace("[ \t\n\r]+", " ", $paramstring); 
+    # harder find-and-replace: find spaces between quotes: change them to underscores
+    # $paramstring = preg_replace("/=\"\([^\"]*\)[ ]\+\([^\"]*\)\"/i", "=\"\1§\2\"", $paramstring);  
+    # the regexp can only change one space at a time: do it 10 times to be "sure" 
+    $pattern = "/=\"([^\"]*)[ ]/";
+    $replacement = "=\"$1_";
+    if ( preg_match( $pattern, $paramstring ) > 0 ) {
+        for ( $i = 0; $i < 10; $i++ ) {
+            $paramstring = preg_replace($pattern, $replacement, $paramstring);  
+        }
+    }
+    echo "<!-- " . $paramstring . "-->"; 
+
     $params = explode(" ", trim($paramstring));
     $result = keyValueInterpreter($params);
 
@@ -143,14 +141,12 @@ function replaceTag($tag, $paramstring) {
 }
 
 function navajoTagReplacer($matches) {
-	//echo count($matches);
-   //print_r($matches);
     if (count($matches) == 0) {
         return;
     }
     ob_start();
 
-	 $tagname = $matches[1];
+     $tagname = $matches[1];
     replaceTag($tagname, $matches[2]);
     $result = ob_get_contents();
     ob_end_clean();
@@ -165,8 +161,15 @@ function errorMessageInclude($result) {
 }
 
 function startNavajoInclude() {
-    $msg = "<script type='text/javascript' src='includes/js/tablesort.js'></script>\n" .
-           "<div class='navajo'><form action='index.php' method='POST' enctype='multipart/form-data'>\n" .
+    $formAction = 'index.php';
+    if(isset($_REQUEST['Itemid'])) {
+        $formAction .= '?Itemid=' . $_REQUEST['Itemid'];
+    }
+    $msg = "<div class='navajo'>\n" . 
+           "<link href='/plugins/content/navajo/css/navajo.css' rel='stylesheet' type='text/css' />\n" .
+           "<script src='/plugins/content/navajo/js/sortableTable.js' type='text/javascript'></script>\n" .
+           "<form action='" . $formAction . "' method='POST' enctype='multipart/form-data'>\n" .
+           "<input type='hidden' name='form_id' value='" . $_SESSION['formId'] . "'/>\n" .
            "<input type='hidden' name='option' value='com_navajo'/>\n" .
            "<input type='hidden' name='task' value='storeNavajo'/>\n"; 
     return $msg;
@@ -177,7 +180,6 @@ function endNavajoInclude() {
 }
 
 function callService($matches) {
-
     $currentNavajo = NavajoClient :: getCurrentNavajo();
 
     if (isset ($matches["name"])) {
@@ -185,7 +187,7 @@ function callService($matches) {
     } else {
         $navajo = null;
     }
-    $refresh = null;
+    $refresh = false;
     if (isset ($matches["refresh"])) {
         $refresh = $matches["refresh"];
     }
@@ -194,16 +196,11 @@ function callService($matches) {
     } else {
         $input = $currentNavajo;
     }
-    $n = getNavajo($navajo);
-    if ($n != null) {
-        // navajo present;
-        if ($refresh == null || $refresh == false) {
-            // no forced refresh
-            if ($input == null) {
-                print "<!-- Require service: $navajo. Already present, so no service has been called -->";
-                return;
-            }
-        }
+    $preExistingNavajo = getNavajo($navajo);
+
+    if ($preExistingNavajo != null && $input == $navajo && $refresh == false) {
+        print "<!-- Require service: $navajo. Already present, so no service has been called -->";
+        return;
     }
 
     if ($input == null) {
@@ -211,7 +208,7 @@ function callService($matches) {
     } else {
        $res = NavajoClient :: callService($input, $navajo);
     }
-	//$res->printXml();
+    //$res->printXml();
 }
 
 function setClassSuffix($matches) {
@@ -236,9 +233,9 @@ function messageInclude($matches) {
     $navajo = getNavajo($currentNavajo);
     $messages = $navajo->getMessages();
     foreach ($messages as $current) {
-    	if ($current->getName() ==  $matches["name"]) {
-    		NavajoPhpClient :: showMessage($navajo, $current, $matches);  
-    	}   
+        if ($current->getName() ==  $matches["name"]) {
+            NavajoPhpClient :: showMessage($navajo, $current, $matches);  
+        }   
     }
 }
 
@@ -247,9 +244,9 @@ function methodInclude($matches) {
     $navajo = getNavajo($currentNavajo);
     $methods = $navajo->getAllMethods();
     foreach ($methods as $current) {
-    	if ($current->getName() ==  $matches["name"]) {
-    		NavajoPhpClient :: showMethod($navajo, $current, $matches);  
-    	}   
+        if ($current->getName() ==  $matches["name"]) {
+            NavajoPhpClient :: showMethod($navajo, $current, $matches);  
+        }   
     }
 }
 
@@ -330,6 +327,7 @@ function usernameInclude($matches) {
         $path = $matches["element"];
         $user = & JFactory :: getUser();
         $value = $user->get("username");
+        // echo "in usernameInclude - setting navajo :" . $navajo . " path: " . $path . " value: " . $value;
         NavajoPhpClient :: setValue($navajo, $path, $value);
     } else {
         echo "<p class='error'>No navajo found: " . $navajo . "</p>";
@@ -364,24 +362,24 @@ function tableInclude($matches) {
         $columnWidthString = $matches["columnWidths"];
         $columnWidths = explode(",", $columnWidthString);
     } else {
-    	$columnWidths = "";
+        $columnWidths = "";
     }
     
     if (isset($matches["columnLabels"])) {
         $columnLabelString = $matches["columnLabels"];
         $columnLabels = explode(",", $columnLabelString);
     } else {
-    	$columnLabels = "";
+        $columnLabels = "";
     }
     if (isset($matches["columnDirections"])) {
         $columnDirectionsString = $matches["columnDirections"];
         $columnDirections = explode(",", $columnDirectionsString);
     } else {
-    	$columnDirections = "";
+        $columnDirections = "";
     }
     # "target" attribute is set to the alias of an article; get corresponding articleid from J! database
     if (isset($matches["target"])) {
-   	    $alias = $matches["target"];
+           $alias = $matches["target"];
         $db =& JFactory::getDBO();
         $query = "SELECT id FROM #__content WHERE alias = '".$alias."'";
         $db->setQuery( $query );
@@ -403,18 +401,24 @@ function submitInclude($matches) {
     # "target" attribute is set to the alias of an article; get corresponding articleid from J! database
     
     $alias = $matches["target"];       
-    $db =& JFactory::getDBO();
-    $query = "SELECT id FROM #__content WHERE alias = '".$alias."'";
-    $db->setQuery( $query );
-    $id = $db->loadResult();          
+    $pos   = strpos($alias, "http://");
+
+    if ($pos === false) {
+        $db =& JFactory::getDBO();
+        $query = "SELECT id FROM #__content WHERE alias = '".$alias."'";
+        $db->setQuery( $query );
+        $id = $db->loadResult();          
+        echo "<input type='hidden' name='" . $label . "' value='" . $id . "'/>\n";
+        echo "<input type='hidden' name='" . $label . ":id' value='" . $id . "'/>\n";
+    } else {
+        echo "<input type='hidden' name='uri' value='" . $alias . "'/>\n";
+    }
 
     if (isset ($_REQUEST["Itemid"])) {
-        echo "<input type='hidden' name='" . $label . ":itemid' value='" . $_REQUEST["Itemid"] . "'/>";
+        echo "<input type='hidden' name='" . $label . ":Itemid' value='" . $_REQUEST["Itemid"] . "'/>";
     }
     echo "<input type='submit' name='direction' value='" . $label . "'/>\n";
-    echo "<input type='hidden' name='" . $label . "' value='" . $id . "'/>\n";
     echo "<input type='hidden' name='" . $label . ":serverCall' value='" . $services . "'/>\n";
-    echo "<input type='hidden' name='" . $label . ":id' value='" . $id . "'/>\n";
     echo "<input type='hidden' name='joomlaSession' value='" . session_name() . "'/>\n";
     echo "<input type='hidden' name='joomlaPath' value='" . $config->getValue("config.sitename") . "'/>\n";
 
@@ -432,9 +436,11 @@ function tableReplacer(& $matches) {
 function keyValueInterpreter($rows) {
     $result = array ();
     foreach ($rows as $row) {
-
         if (trim($row) != "") {
             $row = trim($row);
+            # change underscores back to spaces and remove quotes
+            $row = str_replace("§", " ", $row);
+            $row = str_replace("\"", "", $row);
             $cols = explode("=", $row);
             if (count($cols > 1)) {
                 if (!isset ($cols[1])) {
@@ -447,6 +453,4 @@ function keyValueInterpreter($rows) {
     }
     return $result;
 }
-
-
 ?>
