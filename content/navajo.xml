@@ -12,7 +12,6 @@
 	<files>
 		<filename plugin="navajo">navajo.php</filename>
 		<filename plugin="navajo">Binary.php</filename>
-		<filename plugin="navajo">NavajoHandler.php</filename>
 		<filename plugin="navajo">navajo/client/NavajoClient.php</filename>
 		<filename plugin="navajo">navajo/document/BaseNode.php</filename>
 		<filename plugin="navajo">navajo/document/Header.php</filename>
