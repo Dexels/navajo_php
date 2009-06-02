@@ -39,7 +39,7 @@ class plgContentNavajo extends JPlugin
                 if ( isset($_SESSION['navajoServer']) ) {
                     $navajoServer = $_SESSION['navajoServer'];
                 } else {
-                    if ( isset($pluginParams->get('navajoPostman') ) {
+                    if ( $pluginParams->get('navajoPostman') != '' ) {
                         $navajoServer = $pluginParams->get('navajoPostman');
                     } else {
                         $navajoServer = $pluginParams->get('navajoServer') . '/sportlink/' . strtolower($unionCode) . '/servlet/Postman';
