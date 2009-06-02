@@ -1,37 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install version="1.5" type="plugin" group="content">
 	<name>Content - Navajo</name>
-	<author>Frank Lyaruu</author>
+	<author>Dexels - Dutch Essentials</author>
 	<creationDate>Januari 2007</creationDate>
-	<copyright>(C) 2006 Dexels</copyright>
+	<copyright>(c) 2005 - 2009 Dexels</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<authorEmail>frank@dexels.com</authorEmail>
+	<authorEmail>info@dexels.com</authorEmail>
 	<authorUrl>www.dexels.com</authorUrl>
 	<version>1.5</version>
-        <description>Navajo Integrator Webservice Plugin by Dexels</description>
+        <description>Navajo Integrator Webservice Plugin</description>
 	<files>
 		<filename plugin="navajo">navajo.php</filename>
+		<filename plugin="navajo">Binary.php</filename>
+		<filename plugin="navajo">NavajoHandler.php</filename>
 		<filename plugin="navajo">navajo/client/NavajoClient.php</filename>
 		<filename plugin="navajo">navajo/document/BaseNode.php</filename>
 		<filename plugin="navajo">navajo/document/Header.php</filename>
+		<filename plugin="navajo">navajo/document/Libraries.php</filename>
+		<filename plugin="navajo">navajo/document/Message.php</filename>
 		<filename plugin="navajo">navajo/document/Method.php</filename>
 		<filename plugin="navajo">navajo/document/Methods.php</filename>
-		<filename plugin="navajo">navajo/document/Message.php</filename>
 		<filename plugin="navajo">navajo/document/NavajoDoc.php</filename>
 		<filename plugin="navajo">navajo/document/Property.php</filename>
 		<filename plugin="navajo">navajo/document/Selection.php</filename>
 		<filename plugin="navajo">navajo/document/Transaction.php</filename>
-		<filename plugin="navajo">navajo/document/Libraries.php</filename>
 		<filename plugin="navajo">navajo/phpclient/AdvancedTableLayout.php</filename>
 		<filename plugin="navajo">navajo/phpclient/NavajoLayout.php</filename>
 		<filename plugin="navajo">navajo/phpclient/NavajoPhpClient.php</filename>
-		<filename plugin="navajo">navajo/phpclient/PhotoBookLayout.php</filename>
-		<filename plugin="navajo">navajo/phpclient/SeeMeBasket.php</filename>
-		<filename plugin="navajo">navajo/phpclient/SeeMeLayout.php</filename>
 		<filename plugin="navajo">navajo/phpclient/TableCommaSeparated.php</filename>
 		<filename plugin="navajo">navajo/phpclient/TableLayout.php</filename>
-		<filename plugin="navajo">navajo/phpclient/TagCloud.php</filename>
-		<filename plugin="navajo">navajo/navajo.php</filename>
+		<filename plugin="navajo">navajo/index.php</filename>
 		<filename plugin="navajo">navajo/NavajoHandler.php</filename>
 	</files>
 	<params>

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install version="1.5" type="plugin" group="user">
 	<name>User - Navajo</name>
-	<author>Joomla! Navajo Integration</author>
 	<creationDate>November 2007</creationDate>
-	<copyright>(C) 2007 DexLabs.</copyright>
+	<copyright>(c) 2007 - 2009 DexLabs.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<authorEmail>frank@dexels.com</authorEmail>
+	<author>Dexels - Dutch Essentials</author>
+	<authorEmail>info@dexels.com</authorEmail>
 	<authorUrl>www.dexels.com</authorUrl>
-	<version>1.0</version>
+	<version>1.5</version>
 	<description>A navajo user synchronisation plugin</description>
 	<files>
 		<filename plugin="navajo">navajo.php</filename>

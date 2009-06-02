@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
 <project name="NavajoAuthPlugin" default="all" basedir=".">
+<!--
 	<property name="liveSite" value="../joomlaStable" />
 	<property name="livePlugin" value="${liveSite}/plugins" />
+-->
 	<property name="archive" value="${ant.project.name}.jar" />
-
 	<target name="clean">
 		<delete file="navajo_user.zip" />
-		<delete file="navajo_authorization.zip" />
+		<delete file="navajo_authentication.zip" />
 		<delete file="navajo_content.zip" />
 	</target>
-
-	<target name="authorization">
-		<zip zipfile="navajo_authorization.zip">
-			<fileset dir="authorization" />
+	<target name="authentication">
+		<zip zipfile="navajo_authentication.zip">
+			<fileset dir="authentication" />
 		</zip>
 	</target>
 	<target name="user">
@@ -26,17 +26,17 @@
 			<fileset dir="content" />
 		</zip>
 	</target>
-	
 	<target name="component">
 		<zip zipfile="navajo_component.zip">
 			<fileset dir="component" />
 		</zip>
 	</target>
+        <!--
 	<target name="copytolive">
 		<copy todir="${livePlugin}/content">
 			<fileset dir="content" />
 		</copy>
-		<copy todir="${livePlugin}/authorization">
+		<copy todir="${livePlugin}/authentication">
 			<fileset dir="content" />
 		</copy>
 		<copy todir="${livePlugin}/user">
@@ -50,9 +50,7 @@
 		</copy>
 		
 	</target>
-
-
-	<target name="all" depends="authorization,user,content,copytolive,component" />
-
+        -->
+	<target name="all" depends="authentication,user,content,component" />
 </project>
 <!-- EOF: $RCSfile$ -->
