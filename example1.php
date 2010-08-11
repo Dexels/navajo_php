@@ -17,9 +17,7 @@ $result = NavajoClient :: processNavajo('club/ProcessQueryClub', $init);
 echo "<h2>Example 1</h2>";
 
 # Use one of the functions in NavajoPhpClient to show a property directly
-NavajoPhpClient :: showAbsoluteProperty('club/ProcessQueryClub', 'ClubData/ClubName', '', 0, 1, ''); 
+NavajoPhpClient :: showAbsoluteProperty('club/ProcessQueryClub', 'ClubData/ClubName'); 
 
-# or get the value using one of the NavajoDoc methods
-echo "<h3>Clubname is : " . $result->getAbsoluteProperty('ClubData/ClubName')->getValue() . "</h3>";
 
 ?>
