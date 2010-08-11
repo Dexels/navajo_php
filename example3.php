@@ -7,6 +7,8 @@ if (!isset($_POST['formsubmit'])) { # display search form
     echo "<h2>Example 3</h2>";
     echo "<p>* e.g. try searching for &quot;Sparta&quot;</p>";
     $init = NavajoClient :: callInitService('club/InitSearchClubs');
+    
+    {element name=ClubSearch/SearchName service=club/InitSearchClubs}
     NavajoPhpClient :: showAbsoluteProperty('club/InitSearchClubs', 'ClubSearch/SearchName', '', 0, 1, '');
 
     # the "Search" (submit) button: the name and id should be formsubmit

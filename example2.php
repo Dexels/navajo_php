@@ -3,10 +3,8 @@
 # this example should be called via index.php?action=example2
 # the index.php file includes the necessary libraries and in our case echos a header and footer
 
-$my_club = 'BBKY84H';
-
 $init = NavajoClient :: callInitService('club/InitUpdateClub');
-$init->getAbsoluteProperty('Club/ClubIdentifier')->setValue($my_club);
+$init->getAbsoluteProperty('Club/ClubIdentifier')->setValue('BBKY84H');
 
 $result = NavajoClient :: processNavajo('club/ProcessQueryClub', $init);
 

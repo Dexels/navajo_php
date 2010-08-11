@@ -1,16 +1,13 @@
 <?php 
 
 # This is a standalone script, it includes all necessary libraries, calls a WS, sets a param and calls another
-
 # A session is needed to store web service variables
 
 @session_start();
 require_once('./navajo/StartUpServer.php');
 
-$my_club = 'BBKY84H';
-
 $init = NavajoClient :: callInitService('club/InitUpdateClub');
-$init->getAbsoluteProperty('Club/ClubIdentifier')->setValue($my_club);
+$init->getAbsoluteProperty('Club/ClubIdentifier')->setValue('BBKY84H');
 
 $result = NavajoClient :: processNavajo('club/ProcessQueryClub', $init);
 
