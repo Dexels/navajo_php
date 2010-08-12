@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install version="1.5" type="plugin" group="content">
+<install version="1.5.2" type="plugin" group="content">
 	<name>Content - Navajo</name>
-	<author>Dexels - Dutch Essentials</author>
-	<creationDate>Januari, 2009</creationDate>
-	<copyright>(c) 2005 - 2011 Dexels</copyright>
+	<creationDate>July, 2010</creationDate>
+	<copyright>(c) 2008 - 2011 Dexels</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
-	<authorEmail>info@dexels.com</authorEmail>
+    <author>Dexels - Dutch Essentials</author>
+   	<authorEmail>info@dexels.com</authorEmail>
 	<authorUrl>www.dexels.com</authorUrl>
-	<version>1.5</version>
-        <description>Sportlink plugin to call union web services from within articles</description>
+	<version>1.5.2</version>
+    <description>Sportlink plugin to call union web services from within articles</description>
 	<files>
 		<filename plugin="navajo">navajo.php</filename>	
         <filename plugin="navajo">navajo/index.php</filename>
