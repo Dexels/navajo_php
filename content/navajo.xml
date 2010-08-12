@@ -33,7 +33,7 @@
         <filename plugin="navajo">navajo/phpclient/UnsortableTableLayout.php</filename>
         <filename plugin="navajo">navajo/images/icon-table-sort-asc.png</filename>
         <filename plugin="navajo">navajo/images/icon-table-sort-desc.png</filename>
-        <filename plugin="navajo">navajo/images/icon-table-sort</filename>
+        <filename plugin="navajo">navajo/images/icon-table-sort.png</filename>
         <filename plugin="navajo">navajo/js/sortableTable.js</filename>
 	</files>
 	<params>
@@ -41,6 +41,5 @@
         <param name="unionCode" type="text" size="4" default="KNVB" label="Bond" description="Bondsafkorting (bijv. KNVB, KNHB, NHV of KNKV)" />
 		<param name="navajoUsername" type="text" size="20" default="BBKY84H" label="Clubcode" description="Navajo username" />
 		<param name="navajoPassword" type="text" size="20" default="1633" label="Pincode" description="Navajo password" />	
-		<param name="navajoPostman" type="text" size="255" default="" label="Postman" description="In te vullen *in plaats van* Server en Bond" />
 	</params>
 </install>
