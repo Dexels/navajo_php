@@ -12,9 +12,11 @@ class UnsortableTableLayout extends NavajoLayout {
     }
 
     protected function beforeRendering($nav, $params) {
-        global $i, $key, $link, $id, $itemId, $colGroup, $tableCSS, $totalWidth;
+        global $i, $key, $subkey, $altkey, $link, $id, $itemId, $colGroup, $tableCSS, $totalWidth;
         $i = 0;
         $key    = (isset($params["key"]))?$params["key"]:null;
+        $subkey = (isset($params["subkey"]))?$params["subkey"]:null;
+        $altkey = (isset($params["altkey"]))?$params["altkey"]:null;
         $link   = (isset($params["link"]))?$params["link"]:null;
         $id     = (isset($params["id"]))?$params["id"]:null;
         $itemId = (isset($params["Itemid"]))?$params["Itemid"]:null;
@@ -41,7 +43,7 @@ class UnsortableTableLayout extends NavajoLayout {
     }
 
     protected function renderHeader($nav, $msg, $params) {
-        global $key, $colGroup, $tableCSS, $totalWidth;
+        global $key, $subkey, $altkey, $colGroup, $tableCSS, $totalWidth;
         $j = 0;
         
         echo "\n<table id='" . str_replace("/", "_", $nav) . "' class='" . $tableCSS . "' cellpadding='3' cellspacing='0' border='0' width='" . $totalWidth . "'>\n";
@@ -57,6 +59,10 @@ class UnsortableTableLayout extends NavajoLayout {
                 ($type == 'integer')?$type = 'number':$type = $type;
                 switch ($property) {
                     case $key :
+                        break;                
+                    case $subkey :
+                        break;                
+                    case $altkey :
                         break;                
                     case "Update" :
                         echo "\t<th/>";
@@ -75,17 +81,41 @@ class UnsortableTableLayout extends NavajoLayout {
         echo "<tbody>\n";
     }
     protected function render($nav, $msg, $params) {
-        global $i, $key, $link, $id, $itemId;
+        global $i, $key, $subkey, $altkey, $link, $id, $itemId;
         $j = 0;
         $blnOut = false;
         $keyValue = null;
+        $subkeyValue = null;
+        $altkeyValue = null;
+
         $sfx = ($i % 2) ? "" : "altRow";
-        echo "<tr id='" . $i . "' class='" . $sfx . "'>\n";
+
+        # check if the 'eigenteam' property exists, and its value is true if so, make the table row bold
+        $prp = $msg->getProperty('eigenteam');
+        if (is_null($prp)) {
+            echo "<tr id='" . $i . "' class='" . $sfx . "'>\n";
+        } else {
+            if ( $prp->getValue() == 'true') {
+                echo "<tr id='" . $i . "' class='" . $sfx . " bold'>\n";
+            } else {
+                echo "<tr id='" . $i . "' class='" . $sfx . "'>\n";
+            }
+        }
+
+        # echo "<tr id='" . $i . "' class='" . $sfx . "'>\n";
         foreach ($this->myprops as $property) {
             switch ($property) {
                 case $key :
                     $p = $msg->getProperty($property);
                     $keyValue = $p->getValue();
+                    break;
+                case $subkey :
+                    $p = $msg->getProperty($property);
+                    $subkeyValue = $p->getValue();
+                    break;
+                case $altkey :
+                    $p = $msg->getProperty($property);
+                    $altkeyValue = $p->getValue();
                     break;
                 case "Update" :
                     echo "\t<td>";
@@ -105,18 +135,31 @@ class UnsortableTableLayout extends NavajoLayout {
                     echo "</td>\n";
                     break;
                 case $link :
-                       echo "\t<td>";
-                       if ( $keyValue != null ) {
-                      echo "<a href='index.php?option=com_content&view=article&id=" . $id . "&Itemid=" . $itemId . "&" . $key . "=" . $keyValue . "'>";
-                      NavajoPhpClient :: showProperty($nav, $property, $msg, $params, false, false, "");
-                      echo "</a>"; 
+                    echo "\t<td>";
+                    if (isset($params['article'])) {
+                        $articleLink = "/index.php/" . $params['article'] . "?";
                     } else {
-                      NavajoPhpClient :: showProperty($nav, $property, $msg, $params, false, false, "");
+                        $articleLink = "/index.php?option=com_content&view=article&id=" . $id . "&Itemid=" . $itemId . "&";
+                    }
+                    if ($keyValue != null) {
+                        echo "<a href='" . $articleLink . $key . "=" . $keyValue;
+                    }
+                    if ($subkeyValue != null) { 
+                        echo "&" . $subkey . "=" . $subkeyValue;
+                    }
+                    if ($altkeyValue != null) { 
+                        echo "&" . $altkey . "=" . $altkeyValue;
+                    }
+                    if ($keyValue != null) {
+                        echo "'>";
+                    }
+                    NavajoPhpClient :: showProperty($nav, $property, $msg, $params, false, false, "");
+                    if ($keyValue != null) {
+                        echo "</a>";
                     }
                     echo "</td>\n";
                     break;
                 default :
-                   
                     echo "\t<td>";
                      if(is_array($this->columnDirections)){
                        $blnOut = ($this->columnDirections[$j] == "in")?false:true;

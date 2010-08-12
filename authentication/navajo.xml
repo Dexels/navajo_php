@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install version="1.5" type="plugin" group="authentication">
 	<name>Authentication - Navajo</name>
-	<creationDate>Navajo, 2009</creationDate>
+	<creationDate>Januari, 2009</creationDate>
 	<copyright>
-		(C) 2005 - 2009 Dexels BV - www.dexels.com
+		(C) 2005 - 2011 Dexels BV - www.dexels.com
 	</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<author>Dexels - Dutch Essentials</author>
 	<authorEmail>info@dexels.com</authorEmail>
 	<authorUrl>www.dexels.com</authorUrl>
 	<version>1.5</version>
-	<description>A navajo user authentication plugin</description>
+	<description>Sportlink plugin that checks Athlete credentials from the Sportlink Club application to authenticate</description>
 	<files>
 		<filename plugin="navajo">navajo.php</filename>
 	</files>

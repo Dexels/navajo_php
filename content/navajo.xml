@@ -2,16 +2,16 @@
 <install version="1.5" type="plugin" group="content">
 	<name>Content - Navajo</name>
 	<author>Dexels - Dutch Essentials</author>
-	<creationDate>Januari 2007</creationDate>
-	<copyright>(c) 2005 - 2009 Dexels</copyright>
+	<creationDate>Januari, 2009</creationDate>
+	<copyright>(c) 2005 - 2011 Dexels</copyright>
 	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
 	<authorEmail>info@dexels.com</authorEmail>
 	<authorUrl>www.dexels.com</authorUrl>
 	<version>1.5</version>
-        <description>Navajo Integrator Webservice Plugin</description>
+        <description>Sportlink plugin to call union web services from within articles</description>
 	<files>
-		<filename plugin="navajo">navajo.php</filename>
-		<filename plugin="navajo">Binary.php</filename>
+		<filename plugin="navajo">navajo.php</filename>	
+        <filename plugin="navajo">navajo/index.php</filename>
 		<filename plugin="navajo">navajo/client/NavajoClient.php</filename>
 		<filename plugin="navajo">navajo/document/BaseNode.php</filename>
 		<filename plugin="navajo">navajo/document/Header.php</filename>
@@ -23,17 +23,22 @@
 		<filename plugin="navajo">navajo/document/Property.php</filename>
 		<filename plugin="navajo">navajo/document/Selection.php</filename>
 		<filename plugin="navajo">navajo/document/Transaction.php</filename>
+        <filename plugin="navajo">navajo/phpclient/ActiviteitenTabel.php</filename>
 		<filename plugin="navajo">navajo/phpclient/AdvancedTableLayout.php</filename>
 		<filename plugin="navajo">navajo/phpclient/NavajoLayout.php</filename>
 		<filename plugin="navajo">navajo/phpclient/NavajoPhpClient.php</filename>
 		<filename plugin="navajo">navajo/phpclient/TableCommaSeparated.php</filename>
 		<filename plugin="navajo">navajo/phpclient/TableLayout.php</filename>
-		<filename plugin="navajo">navajo/index.php</filename>
-		<filename plugin="navajo">navajo/NavajoHandler.php</filename>
+        <filename plugin="navajo">navajo/phpclient/TeamResultsMatrix.php</filename>
+        <filename plugin="navajo">navajo/phpclient/UnsortableTableLayout.php</filename>
+        <filename plugin="navajo">navajo/images/icon-table-sort-asc.png</filename>
+        <filename plugin="navajo">navajo/images/icon-table-sort-desc.png</filename>
+        <filename plugin="navajo">navajo/images/icon-table-sort</filename>
+        <filename plugin="navajo">navajo/js/sortableTable.js</filename>
 	</files>
 	<params>
 		<param name="navajoServer" type="text" size="255" default="penelope1.dexels.com" label="Server" description="Navajo Server to connect to" />
-                <param name="unionCode" type="text" size="4" default="KNVB" label="Bond" description="Bondsafkorting (bijv. KNVB, KNHB, NHV of KNKV)" />
+        <param name="unionCode" type="text" size="4" default="KNVB" label="Bond" description="Bondsafkorting (bijv. KNVB, KNHB, NHV of KNKV)" />
 		<param name="navajoUsername" type="text" size="20" default="BBKY84H" label="Clubcode" description="Navajo username" />
 		<param name="navajoPassword" type="text" size="20" default="1633" label="Pincode" description="Navajo password" />	
 		<param name="navajoPostman" type="text" size="255" default="" label="Postman" description="In te vullen *in plaats van* Server en Bond" />

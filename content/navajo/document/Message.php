@@ -1,8 +1,4 @@
 <?php
-require_once ('BaseNode.php');
-require_once ('NavajoDoc.php');
-require_once ('Property.php');
-
 class Message extends BaseNode {
     public $messageList = array ();
     public $propertyList = array ();
@@ -45,10 +41,10 @@ class Message extends BaseNode {
         return $this->type;
     }
     
-	public function getTextNode() {
-		return null;
-	}
-	
+    public function getTextNode() {
+        return null;
+    }
+    
     public function getTagName() {
         return 'message';
     }
@@ -109,7 +105,12 @@ class Message extends BaseNode {
     }
 
     function getProperty($name) {
-        return $this->propertyList[$name];
+        if ( isset($this->propertyList[$name]) ) {
+            $p = $this->propertyList[$name];
+        } else {
+            $p = null;
+        }
+        return $p;
     }
 
     function getPath() {

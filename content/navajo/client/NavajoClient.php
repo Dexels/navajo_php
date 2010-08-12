@@ -1,17 +1,19 @@
 <?php
 error_reporting(E_ALL);
+ini_set("memory_limit","2G");
 
 class navajoSession {
     function get($name, $default, $namespace) {
-        return JFactory::getSession()->get($name,$default,$namespace);
+        $jSession = JFactory::getSession();
+        $myVar = $jSession->get($name,$default,$namespace);
+        $value = unserialize($myVar);
+        return $value;
     }
 
     function set($name, $value, $namespace) {
-        JFactory::getSession()->set($name,$value,$namespace);
-    }
-    function clear($name, $namespace) {
-        JFactory::getSession()->set($name,$value,$namespace);
-        unset ($_SESSION[$name . $namespace]);
+        $jSession = JFactory::getSession();
+        $myVar = serialize($value);
+        $jSession->set($name,$myVar,$namespace);
     }
 }
 
@@ -57,8 +59,10 @@ class NavajoClient {
         global $session;
 
         if (is_null($navajo)) {
-            trace('No navajo supplied. Not good');
+            echo ('<h2>Er is een fout opgetreden</h2><p>U tracht een web service aan te roepen, waarvan de input niet bestaat.</p>');
+            return;
         }
+
         $navajo->setHeaderAttributes(self :: getUser(), self :: getPassword(), $serv);
         # $navajo->printXML();
         $ch = curl_init();
@@ -71,16 +75,16 @@ class NavajoClient {
         curl_setopt($ch, CURLOPT_POSTFIELDS, $contents);
         
         $body = curl_exec($ch);
-
         $err = curl_error($ch);
         $result = $body;
         
         if (!is_null($err) && ''!=$err) {
-            echo ('<h2>SERVER CONNECTION ERROR:</h2> Error calling service: ' . $serv.'<br/> message: '.$err);
+            echo ('<h2>Er is een fout opgetreden</h2><p>Connectiefout bij het opvragen van: ' . $serv.'</p><p>Foutbericht server:<br/>'. $err . '</p>');
             exit;
         }
         
         curl_close($ch);
+
         $res = new Navajo();
 
         $res->parseXml($result);
@@ -88,13 +92,14 @@ class NavajoClient {
         $service = $res->getService();
 
         $session->set('navajoclass@' . $service, $res, 'navajo');
-        $session->set('currentNavajo', $service, 'navajo');
+        self :: setCurrentNavajo($service);
 
         $error = $res->getMessage('error');
         
         if (!is_null($error)) {
-            echo ('<h2>SERVER SIDE</h2> Error calling service: ' . $service);
-            $res->printXml();
+            echo ('<h2>Er is een fout opgetreden</h2><p>Aanroep van ' . $service . ' mislukt.<p><p>Foutbericht server:<br/>');
+            # $error->printXml();
+            echo '</p>';
             exit;
         }
         $conditionErrors = $res->getMessage("ConditionErrors");
@@ -102,14 +107,11 @@ class NavajoClient {
             echo "<p class='error'>Ongeldige invoer voor webservice: " . $service . "</p>";
             $errorChildren = $res->getMessage("ConditionErrors")->getSubMessages();
             for ($i = 0; $i < count($errorChildren); $i++) {
-                #print_r($errorChildren);
+                # print_r($errorChildren);
                 echo "Fout: " . $errorChildren[$i]->getProperty("FailedExpression")->getValue();
-               
             }
-            exit();
         }
-        //;
-            return $res;
+        return $res;
     }
 
     static function callInitService($service) {
@@ -124,7 +126,9 @@ class NavajoClient {
     }
 
     static function callService($source, $service) {
-        $n = getNavajo($source);
+        $n = getNavajo($source, 'callService');
+        # $n->printXML();
+
         $r = self :: doSimpleSend($service, $n);
         return $r;
     }
@@ -146,7 +150,7 @@ class NavajoClient {
     }
 
     static function updateNavajoFromPost() {
-
+        global $session;
         foreach (array_keys($_FILES) as $current_var) {
 
             $explode = explode("|", $current_var);
@@ -158,7 +162,7 @@ class NavajoClient {
             $s = $explode[1];
             $propertypath = $explode[2];
 
-            $n = getNavajo($s);
+            $n = getNavajo($s, 'updateFromPost');
             $property = $n->getAbsoluteProperty($propertypath);
             if ($property == null) {
                 echo "<p class='error'>Error retrieving binary property: " . $current_var . "</p>\n";
@@ -186,7 +190,7 @@ class NavajoClient {
             $s = $explode[1];
             $propertypath = $explode[2];
 
-            $n = getNavajo($s);
+            $n = getNavajo($s, 'updateFromPost');
             $property = $n->getAbsoluteProperty($propertypath);
             if ($property == null) {
                 echo "<p class='error'>Error retrieving property: " . $current_var . "</p>\n";
@@ -218,18 +222,20 @@ function startupNavajo($server, $username, $password) {
     NavajoClient :: setServer($server);
 }
 
-function getNavajo($s) {
+function getNavajo($s, $fromName = 'unknown') {
     global $session;
+    echo "<!-- getNavajo(" . $s . ") called from " . $fromName . " -->";
     $navvv = $session->get('navajoclass@' . $s, null, 'navajo');
-    if ($navvv != null) {
+
+    if (get_class($navvv) != '__PHP_Incomplete_Class' && $navvv != null) {
         return $navvv;
+    } else {
+        return null;
     }
-    return null;
 }
 
 function getBinary($s, $path) {
-    global $session;
-    $n = getNavajo($s);
+    $n = getNavajo($s, 'getBinary');
     $prop = $n->getAbsoluteProperty($path);
     $str = $prop->getBinaryValue();
     return $str;

@@ -1,8 +1,4 @@
 <?php
-require_once ('BaseNode.php');
-require_once ('NavajoDoc.php');
-require_once ('Selection.php');
-
 class Property extends BaseNode {
     public $type;
     public $value;
@@ -30,7 +26,7 @@ class Property extends BaseNode {
             return $this->direction;
         }
         if ($n == 'value') {
-            return $this->value;
+            return htmlentities( $this->value, ENT_QUOTES );
         }
         if ($n == 'description') {
             return $this->description;
@@ -55,7 +51,6 @@ class Property extends BaseNode {
         return $this->name;
     }
     
-     
     public function getDescription() {
         return $this->description;
     }
@@ -69,7 +64,20 @@ class Property extends BaseNode {
     }
     
     public function getValue() {
-        return $this->value;
+        if ($this->getType() == "memo") {
+            $value= preg_replace('!<br.*>!iU', "\n", $this->value);
+        } else if ($this->getType() == "selection") {
+            $value = "";
+            $selectionList = $this->getAllSelections();
+            foreach ($selectionList as $currentSelection) {
+                if ($currentSelection->isSelected == "1") {
+                    ($value == "")?$value = $currentSelection->value:$value = $value . ";" . $currentSelection->value;
+                }
+            }
+        } else {
+            $value = $this->value;
+        }
+        return $value;
     }
     
     public function getPropertyId() {
@@ -84,11 +92,15 @@ class Property extends BaseNode {
     }
 
     public function setValue($v) {
-        if ($this->type == 'selection') {
-        	$this->setSelectedByValue($v);
+        global $session;
+        if ($this->getType() == "memo") {
+            $value = str_replace(array("\r\n", "\r", "\n"), "<br/>", $v);
+        } else if ($this->type == 'selection') {
+            $this->setSelectedByValue($v);
         } else {
-        	$this->value = stripslashes($v);
+            $this->value = stripslashes($v);
         } 
+        $session->set('navajoclass@' . $this->getRootDoc()->getService(), $this->getRootDoc(), 'navajo');
     }
 
     public function getTagName() {
@@ -142,22 +154,34 @@ class Property extends BaseNode {
     }
         
     function setBinaryValue($v) {
+        global $session;
         $this->textNode = $v;        
+        $session->set('navajoclass@' . $this->getRootDoc()->getService(), $this->getRootDoc(), 'navajo');
     }
     
     function setSelectedByValue($value) {
-
+        global $session;
         $selectionList = $this->getAllSelections();
 
         foreach ($selectionList as $currentSelection) {
             $currentvalue = $currentSelection->value;
-            if ($currentvalue == $value) {
-                $currentSelection->isSelected = "1";
-            } else {
+            if(is_array($value)) {
                 $currentSelection->isSelected = "0";
+                foreach($value as $userSelectedValue) {
+                    if ($userSelectedValue == $currentvalue) {
+                        $currentSelection->isSelected = "1";
+                        break;
+                    }
+                }
+            } else {
+                if ($currentvalue == $value) {
+                    $currentSelection->isSelected = "1";
+                } else {
+                    $currentSelection->isSelected = "0";
+                }
             }
         }
+        $session->set('navajoclass@' . $this->getRootDoc()->getService(), $this->getRootDoc(), 'navajo');
     }
-
 }
 ?>

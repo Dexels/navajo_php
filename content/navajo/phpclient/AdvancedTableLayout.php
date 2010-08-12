@@ -12,10 +12,11 @@ class AdvancedTableLayout extends NavajoLayout {
     }
 
     protected function beforeRendering($nav, $params) {
-        global $i, $key, $subkey, $link, $id, $itemId, $colGroup, $tableCSS, $totalWidth;
+        global $i, $key, $subkey, $altkey, $link, $id, $itemId, $colGroup, $tableCSS, $totalWidth;
         $i = 1;
         $key    = (isset($params["key"]))?$params["key"]:null;
         $subkey = (isset($params["subkey"]))?$params["subkey"]:null;
+        $altkey = (isset($params["altkey"]))?$params["altkey"]:null;
         $link   = (isset($params["link"]))?$params["link"]:null;
         $id     = (isset($params["id"]))?$params["id"]:null;
         $itemId = (isset($params["Itemid"]))?$params["Itemid"]:null;
@@ -42,7 +43,7 @@ class AdvancedTableLayout extends NavajoLayout {
     }
 
     protected function renderHeader($nav, $msg, $params) {
-        global $key, $subkey, $colGroup, $tableCSS, $totalWidth;
+        global $key, $subkey, $altkey, $colGroup, $tableCSS, $totalWidth;
         $j = 0;
         
         echo "\n<table id='" . str_replace("/", "_", $nav) . "' class='" . $tableCSS . "' cellpadding='3' cellspacing='0' border='0' width='" . $totalWidth . "'>\n";
@@ -61,6 +62,8 @@ class AdvancedTableLayout extends NavajoLayout {
                         break;                
                     case $subkey :
                         break;                
+                    case $altkey :
+                        break;                
                     case "Update" :
                         echo "\t<th/>";
                         break;
@@ -78,13 +81,27 @@ class AdvancedTableLayout extends NavajoLayout {
         echo "<tbody>\n";
     }
     protected function render($nav, $msg, $params) {
-        global $i, $key, $subkey, $link, $id, $itemId;
+        global $i, $key, $subkey, $altkey, $link, $id, $itemId;
         $j = 0;
         $blnOut = false;
         $keyValue = null;
         $subkeyValue = null;
+        $altkeyValue = null;
         $sfx = ($i % 2) ? "" : "altRow";
-        echo "<tr id='" . $i . "' class='" . $sfx . "'>\n";
+
+        # check if the 'eigenteam' property exists, and its value is true if so, make the table row bold
+        $prp = $msg->getProperty('eigenteam');
+        if (is_null($prp)) {
+            echo "<tr id='" . $i . "' class='" . $sfx . "'>\n";
+        } else {
+            if ( $prp->getValue() == 'true') {
+                echo "<tr id='" . $i . "' class='" . $sfx . " bold'>\n";
+            } else {
+                echo "<tr id='" . $i . "' class='" . $sfx . "'>\n";
+            }
+        }
+
+        # echo "<tr id='" . $i . "' class='" . $sfx . "'>\n";
         foreach ($this->myprops as $property) {
             switch ($property) {
                 case $key :
@@ -94,6 +111,10 @@ class AdvancedTableLayout extends NavajoLayout {
                 case $subkey :
                     $p = $msg->getProperty($property);
                     $subkeyValue = $p->getValue();
+                    break;
+                case $altkey :
+                    $p = $msg->getProperty($property);
+                    $altkeyValue = $p->getValue();
                     break;
                 case "Update" :
                     echo "\t<td>";
@@ -119,17 +140,27 @@ class AdvancedTableLayout extends NavajoLayout {
                     echo "</td>\n";
                     break;
                 case $link :
-                       echo "\t<td>";
-                    if ( $keyValue != null && $subkeyValue != null ) {
-                      echo "<a href='index.php?option=com_content&view=article&id=" . $id . "&Itemid=" . $itemId . "&" . $key . "=" . $keyValue . "&" . $subkey . "=" . $subkeyValue . "'>";
-                      NavajoPhpClient :: showProperty($nav, $property, $msg, $params, false, false, "");
-                      echo "</a>"; 
-                    } else if (  $keyValue != null ) {
-                      echo "<a href='index.php?option=com_content&view=article&id=" . $id . "&Itemid=" . $itemId . "&" . $key . "=" . $keyValue . "'>";
-                      NavajoPhpClient :: showProperty($nav, $property, $msg, $params, false, false, "");
-                      echo "</a>"; 
+                    echo "\t<td>";
+                    if (isset($params['article'])) {
+                        $articleLink = "/index.php/" . $params['article'] . "?";
                     } else {
-                      NavajoPhpClient :: showProperty($nav, $property, $msg, $params, false, false, "");
+                        $articleLink = "/index.php?option=com_content&view=article&id=" . $id . "&Itemid=" . $itemId . "&";
+                    }
+                    if ($keyValue != null) {
+                        echo "<a href='" . $articleLink . $key . "=" . $keyValue;
+                    }
+                    if ($keyValue != null AND $subkeyValue != null) {
+                        echo "&" . $subkey . "=" . $subkeyValue;
+                    }
+                    if ($keyValue != null AND $altkeyValue != null) {
+                        echo "&" . $altkey . "=" . $altkeyValue;
+                    }
+                    if ($keyValue != null) {
+                        echo "'>";
+                    }
+                    NavajoPhpClient :: showProperty($nav, $property, $msg, $params, false, false, "");
+                    if ($keyValue != null) {
+                        echo "</a>";
                     }
                     echo "</td>\n";
                     break;
@@ -141,7 +172,6 @@ class AdvancedTableLayout extends NavajoLayout {
                     NavajoPhpClient :: showProperty($nav, $property, $msg, $params, $blnOut, false, "");
                     echo "</td>\n";
             }
-            
             $j++;
         }
         $i++;

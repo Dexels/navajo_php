@@ -1,6 +1,5 @@
 <?php
-
-function    print_var( $var )
+function print_var( $var )
 {
    if( is_string( $var ) )
        return( '"'.str_replace( array("\x00", "\x0a", "\x0d", "\x1a", "\x09"), array('\0', '\n', '\r', '\Z', '\t'), $var ).'"' );
@@ -27,11 +26,9 @@ function    print_var( $var )
    return( var_export( $var, true ) );    // anything else, just let php try to print it
 }
 
-function    trace( $msg )
+function trace( $msg )
 {
    echo "<pre>\n";
-  
-   //var_export( debug_backtrace() ); echo "</pre>\n"; return;    // this line shows what is going on underneath
   
    $trace = array_reverse( debug_backtrace() );
    $indent = '';
@@ -68,21 +65,9 @@ function    trace( $msg )
           
            $func .= ')';
        }
-      
        echo "\n";
-      
        $indent .= "\t";
    }
-  
    echo "</pre>\n";
 }
-
-//trace( 'error outside function' );
-
-//function    test( $param1, $param2, $param3, $param4 )
-//{
-//   trace( 'error in test()' );
-//}
-
-//test( 1.1, "param2\n", array( 1 => "a\n", "b\n" => 2 ), false );
 ?>

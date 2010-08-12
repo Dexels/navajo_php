@@ -1,7 +1,4 @@
 <?php
-require_once('BaseNode.php');
-require_once('NavajoDoc.php');
-
 class Selection extends BaseNode {
 	public $name;
 	public $value;

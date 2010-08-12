@@ -1,7 +1,4 @@
 <?php
-require_once ('BaseNode.php');
-require_once ('NavajoDoc.php');
-
 class Transaction extends BaseNode {
 
     public $rpc_usr;
@@ -32,6 +29,7 @@ class Transaction extends BaseNode {
             'rpc_name'
         );
     }
+
     public function getCurrentService() {
         return $this->currentService;
     }
@@ -46,7 +44,6 @@ class Transaction extends BaseNode {
         if ($n == 'rpc_name') {
             return $this->rpc_name;
         }
-
     }
     
     function setHeaderAttributes($user, $password, $service) {

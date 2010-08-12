@@ -1,5 +1,4 @@
 <?php
-
 defined('_JEXEC') or die();
 
 jimport('joomla.event.plugin');
@@ -18,9 +17,9 @@ class plgAuthenticationNavajo extends JPlugin
         
         $authPlugin     = JPluginHelper::getPlugin('content','navajo');
         $pluginParams   = new JParameter( $authPlugin->params );        
-        $navajoUsername = (isset($_SESSION['navajoUsr']))?('#' . $_SESSION['navajoUsr']):('#' . $pluginParams->get('navajoUsername'));
-        $navajoPassword = (isset($_SESSION['navajoPwd']))?$_SESSION['navajoPwd']:('#' . $pluginParams->get('navajoPassword'));
-        $unionCode      = (isset($_SESSION['unionCode']))?$_SESSION['unionCode']:$pluginParams->get('unionCode');
+        $navajoUsername = '#' . strtoupper($pluginParams->get('navajoUsername'));
+        $navajoPassword = '#' . strtoupper($pluginParams->get('navajoPassword'));
+        $unionCode      = $pluginParams->get('unionCode');
         $navajoServer   = $pluginParams->get('navajoServer') . '/sportlink/' . strtolower($unionCode) . '/servlet/Postman';
         
         //echo "Server : " . $navajoServer . ", NavajoUsr : " . $navajoUsername . ", NavajoPwd : " . $navajoPassword;            
@@ -33,9 +32,9 @@ class plgAuthenticationNavajo extends JPlugin
             return;
         }
 
-        $usr->setValue($username['username']);
-        $n->getAbsoluteProperty('/UserData/Password')->setValue($username['password']);
-        $n->getAbsoluteProperty('/Club/ClubIdentifier')->setValue($pluginParams->get('navajoUsername'));
+        $usr->setValue(strtoupper($username['username']));
+        $n->getAbsoluteProperty('/UserData/Password')->setValue(strtoupper($username['password']));
+        $n->getAbsoluteProperty('/Club/ClubIdentifier')->setValue($navajoUsername);
         $n2 = NavajoClient::processNavajo("vla/sportlinkathlete/ProcessLoginAthleteUser",$n);
                 
         $resultProp = $n2->getAbsoluteProperty('/Authenticated/Ok');
@@ -45,25 +44,36 @@ class plgAuthenticationNavajo extends JPlugin
             $role = $n2->getAbsoluteProperty('/Authenticated/UserRole')->getValue();
         }
         if( $result == 'true' ) {
-            $emm = $n2->getAbsoluteProperty('/Person/EmailAddress')->getValue();
-            $nme = $n2->getAbsoluteProperty('/Person/ExternalId')->getValue();
-            $fln = $n2->getAbsoluteProperty('/Person/FullName')->getValue();
-            $response->name     = $nme;
+            if ($role != 'CLUB_ADMIN') {
+                $emm = $n2->getAbsoluteProperty('/Person/EmailAddress')->getValue();
+                $nme = $n2->getAbsoluteProperty('/Person/ExternalId')->getValue();
+                $fln = $n2->getAbsoluteProperty('/Person/FullName')->getValue();
+            } else { 
+                $emm = strtolower($username['username']) . '@' . strtolower($n->getAbsoluteProperty('/Club/ClubIdentifier')->getValue()) . '.slclubsite.nl';
+                $nme = strtolower($username['username']);
+                $fln = strtolower($username['username']); 
+            }
+            
+            # Check for duplicate e-mailaddress
+            $db =& JFactory::getDBO();
+
+            $query = 'SELECT COUNT(*) AS cnt FROM `#__users` WHERE email = \'' . $emm . '\'';
+            $db->setQuery( $query );
+            $result = $db->loadObject();
+            $duplEmail = ($result->cnt > 0)?TRUE:FALSE;
+            if ($duplEmail) {
+                $emm = strtolower($n2->getAbsoluteProperty('/Person/ExternalId')->getValue()) . '@' . strtolower($n2->getAbsoluteProperty('/Club/ClubIdentifier')->getValue()) . '.slclubsite.nl';
+            }
+
             $response->fullname = $fln;
             $response->email    = $emm;
-            $response->type     = JAUTHENTICATE_STATUS_SUCCESS;
             $response->status   = JAUTHENTICATE_STATUS_SUCCESS;
+            $response->error_message = 'Correct';
+            $response->name     = $nme;
         } else {                
-            # echo "<html><head><title>Fout opgetreden</title></head><body>" .
-            #     "<script type='text/javascript'>alert('Inloggen niet gelukt, probeer het nog eens of neem contact op met uw ledenadministrateur');</script>" .
-            #     "<p>Klik <a href='javascript:history.back()'>hier</a> om terug te gaan</p></body></html>";
-            # exit();
-            $response->type     = JAUTHENTICATE_STATUS_FAILURE;
             $response->status   = JAUTHENTICATE_STATUS_FAILURE;
-            $response->error_message        = 'Could not authenticate';
-            return false;
+            $response->error_message = 'Could not authenticate';
         }
-        return;
     }
 }
 ?>
