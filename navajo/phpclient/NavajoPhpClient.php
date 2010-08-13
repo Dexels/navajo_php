@@ -474,7 +474,11 @@ class NavajoPhpClient {
     }
 
     static function outputDateProperty($nav, $property, $id, $params, $classsuffix) {
-        $value = date("d/m/Y", strtotime($property->getAttribute("value")));
+        if ($property->getAttribute("value") != '') {        
+            $value = date("d/m/Y", strtotime($property->getAttribute("value")));
+        } else { 
+            $value = ''; 
+        }
         echo $value;
     }
     
