@@ -1,10 +1,23 @@
 <?php
-error_reporting(E_ALL);
-ini_set("memory_limit","2G");
+error_reporting(E_ALL ^ E_NOTICE);
+
+global $map;
+$map = array();
 
 class navajoSession {
+ 
+    function get($name, $default, $namespace) {
+        global $map;
+        $value = $map[$name];
+        return $value;
+    }
 
-    function get($name, $value, $namespace) {
+    function set($name, $value, $namespace) {
+        global $map;
+        $map[$name] = $value;
+    }
+
+    function get_from_session($name, $default, $namespace) {
         # use this for the Joomla version:
         # $jSession = JFactory::getSession();
         # $myVar = $jSession->get($name,$default,$namespace);
@@ -18,7 +31,7 @@ class navajoSession {
         return $value;
     }
 
-    function set($name, $value, $namespace) {
+    function set_from_session($name, $value, $namespace) {
         # use this for the Joomla version:
         # $jSession = JFactory::getSession();
         # $myVar = serialize($value);
@@ -26,6 +39,13 @@ class navajoSession {
 
         # use this for the default PHP version
         $_SESSION[$name . $namespace] = serialize($value);
+    }
+
+    function storeNavajo() {
+        global $map;
+        foreach(array_keys($map) as $key) :
+            navajoSession :: set_from_session($key, $map[$key], 'navajo');
+        endforeach;
     }
 }
 
@@ -36,39 +56,40 @@ class NavajoClient {
 
     static function getServer() {
         global $session;
-        $server = $session->get('navajoServer', '', 'navajo');
+        $server = $session->get_from_session('navajoServer', '', 'navajo');
         return $server;
     }
 
     static function setServer($s) {
         global $session;
-        $server = $session->set('navajoServer', $s, 'navajo');
+        $server = $session->set_from_session('navajoServer', $s, 'navajo');
     }
 
     static function getUser() {
         global $session;
-        $user = $session->get('navajoUser', '', 'navajo');
+        $user = $session->get_from_session('navajoUser', '', 'navajo');
         return $user;
     }
 
     static function setUser($s) {
         global $session;
-        $session->set('navajoUser', $s, 'navajo');
+        $session->set_from_session('navajoUser', $s, 'navajo');
     }
 
     static function getPassword() {
         global $session;
-        $password = $session->get('navajoPassword', '', 'navajo');
+        $password = $session->get_from_session('navajoPassword', '', 'navajo');
         return $password;
     }
 
     static function setPassword($s) {
         global $session;
-        $session->set('navajoPassword', $s, 'navajo');
+        $session->set_from_session('navajoPassword', $s, 'navajo');
     }
 
     static function processNavajo($serv, $navajo) {
         global $session;
+
         if (is_null($navajo)) {
             echo ('<h2>Er is een fout opgetreden</h2><p>U tracht een web service aan te roepen, waarvan de input niet bestaat.</p>');
             return;
@@ -161,6 +182,7 @@ class NavajoClient {
     }
 
     static function updateNavajoFromPost() {
+        global $session;
         foreach (array_keys($_FILES) as $current_var) {
 
             $explode = explode("|", $current_var);
@@ -234,13 +256,15 @@ function startupNavajo($server, $username, $password) {
 
 function getNavajo($s, $fromName = 'unknown') {
     global $session;
-    echo "<!-- getNavajo(" . $s . ") called from " . $fromName . " -->";
+    # echo "<!-- getNavajo(" . $s . ") called from " . $fromName . " -->";
     $navvv = $session->get('navajoclass@' . $s, null, 'navajo');
 
     if (get_class($navvv) != '__PHP_Incomplete_Class' && $navvv != null) {
         return $navvv;
     } else {
-        return null;
+        # echo "<!-- actually retrieving Navajo from SESSION -->";
+        $navvv = $session->get_from_session('navajoclass@' . $s, null, 'navajo');
+        return $navvv;
     }
 }
 
