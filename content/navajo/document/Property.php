@@ -26,7 +26,7 @@ class Property extends BaseNode {
             return $this->direction;
         }
         if ($n == 'value') {
-            return htmlentities( $this->value, ENT_QUOTES );
+            return htmlentities( $this->value, ENT_QUOTES, 'UTF-8' );
         }
         if ($n == 'description') {
             return $this->description;
