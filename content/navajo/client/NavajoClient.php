@@ -1,6 +1,10 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
 
+# This unfortunately is needed because "big" scripts that are stored in a 
+# SESSION need an insane amount of RAM to serialize (e.g. the address book result message)
+ini_set("memory_limit","2G");
+
 global $map;
 $map = array();
 
