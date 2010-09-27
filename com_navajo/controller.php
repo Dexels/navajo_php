@@ -39,6 +39,9 @@ class NavajoController extends JController
                     $_REQUEST['errormessage'] = $e->getMessage();
                     echo $e->getMessage();
                 }
+                
+                # store the latest navajo in a session, because we are redirecting and need to keep the result
+                navajoSession :: storeNavajo();
             }
         }
         
