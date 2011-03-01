@@ -91,7 +91,10 @@ class UnsortableTableLayout extends NavajoLayout {
         $sfx = ($i % 2) ? "" : "altRow";
 
         # check if the 'eigenteam' property exists, and its value is true if so, make the table row bold
-        $prp = $msg->getProperty('eigenteam');
+        $prp  = $msg->getProperty('eigenteam');
+        if (is_null($prp)) {
+           $prp  = $msg->getProperty('ClubData');
+        }
         if (is_null($prp)) {
             echo "<tr id='" . $i . "' class='" . $sfx . "'>\n";
         } else {

@@ -1,9 +1,6 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
-
-# This unfortunately is needed because "big" scripts that are stored in a 
-# SESSION need an insane amount of RAM to serialize (e.g. the address book result message)
-ini_set("memory_limit","2G");
+ini_set("memory_limit", "2G");
 
 global $map;
 $map = array();
@@ -82,20 +79,19 @@ class NavajoClient {
 
     static function processNavajo($serv, $navajo) {
         global $session;
-
-        if (is_null($navajo)) {
-            echo ('<h2>Er is een fout opgetreden</h2><p>U tracht een web service aan te roepen, waarvan de input niet bestaat.</p>');
+        if (is_null($navajo) OR $navajo == null) {
+            echo ('<b>Er is een fout opgetreden</b><p>U tracht een web service aan te roepen, waarvan de input niet bestaat, of de server kan niet gevonden worden.</p>');
             return;
         }
 
-        $navajo->setHeaderAttributes(self :: getUser(), self :: getPassword(), $serv);
         # $navajo->printXML();
+        $navajo->setHeaderAttributes(self :: getUser(), self :: getPassword(), $serv);
         $ch = curl_init();
         $contents = $navajo->saveXML();
          
         curl_setopt($ch, CURLOPT_URL, self :: getServer());
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 15);
         curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $contents);
         
@@ -104,8 +100,8 @@ class NavajoClient {
         $result = $body;
         
         if (!is_null($err) && ''!=$err) {
-            echo ('<h2>Er is een fout opgetreden</h2><p>Connectiefout bij het opvragen van: ' . $serv.'</p><p>Foutbericht server:<br/>'. $err . '</p>');
-            exit;
+            echo ('<b>Er is een fout opgetreden</b><p>Connectiefout bij het opvragen van: ' . $serv . '</p>');
+            return;
         }
         
         curl_close($ch);
@@ -122,10 +118,8 @@ class NavajoClient {
         $error = $res->getMessage('error');
         
         if (!is_null($error)) {
-            echo ('<h2>Er is een fout opgetreden</h2><p>Aanroep van ' . $service . ' mislukt.<p><p>Foutbericht server:<br/>');
-            # $error->printXml();
-            echo '</p>';
-            exit;
+            echo ('<b>Er is een fout opgetreden</b><p>Aanroep van ' . $service . ' mislukt.</p>');
+            return;
         }
         $conditionErrors = $res->getMessage("ConditionErrors");
         if (!is_null($conditionErrors)) {

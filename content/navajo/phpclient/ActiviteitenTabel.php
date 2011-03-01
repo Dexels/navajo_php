@@ -46,7 +46,7 @@ class ActiviteitenTabel extends NavajoLayout {
                     echo "</h2>";
                     break;
                 case "datumvan" :
-                    echo "\n<p><label>Waneer?</label>";
+                    echo "\n<p><label>Wanneer?</label>";
                     NavajoPhpClient :: showProperty($nav, $property, $msg, $params, false, false, ""); 
                     break;
                 case "tijdvan" :

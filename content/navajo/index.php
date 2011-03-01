@@ -362,6 +362,13 @@ function tableInclude($matches) {
     } else {
         $columnDirections = "";
     }
+
+    if (isset($matches["tableId"])) {
+        $tableId = $matches["tableId"];
+    } else {
+        $tableId = "";
+    }
+    
     # "target" attribute is set to the alias of an article; get corresponding articleid from J! database
     if (isset($matches["target"])) {
            $alias = $matches["target"];
@@ -374,7 +381,7 @@ function tableInclude($matches) {
         $matches["Itemid"] = $_REQUEST["Itemid"];
     }
 
-    NavajoPhpClient :: showTable($navajo, $path, $columns, $matches, $columnWidths, $columnLabels, $columnDirections);
+    NavajoPhpClient :: showTable($navajo, $path, $columns, $matches, $columnWidths, $columnLabels, $columnDirections,"","",$tableId);
 }
 
 function submitInclude($matches) {

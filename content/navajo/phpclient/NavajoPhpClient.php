@@ -1,7 +1,7 @@
 <?php
 class NavajoPhpClient {
 
-    static function showTable($navname, $msgpath, $columns, $params="", $columnWidths = "", $columnLabels = "", $columnDirections = "", $updateNavajo = "", $deleteNavajo = "") {
+    static function showTable($navname, $msgpath, $columns, $params="", $columnWidths = "", $columnLabels = "", $columnDirections = "", $updateNavajo = "", $deleteNavajo = "",$tableId = "") {
         require_once "NavajoLayout.php";   
         $result = getNavajo($navname, 'showTable');
         if ($result == null) { return; }
@@ -16,7 +16,7 @@ class NavajoPhpClient {
             $layout = new $params["customLayout"]($columns, $params, $columnWidths, $columnLabels, $columnDirections);
           } else {
             require_once "AdvancedTableLayout.php";   
-               $layout = new AdvancedTableLayout($columns, $params, $columnWidths, $columnLabels, $columnDirections);
+               $layout = new AdvancedTableLayout($columns, $params, $columnWidths, $columnLabels, $columnDirections,$tableId);
         }
         if($updateNavajo != "") {
 #            echo "<input type='submit' name='submit' class='updateBtn hidden' value='Update_" . $navname . "' />";
@@ -33,14 +33,20 @@ class NavajoPhpClient {
 
     static function setValue($navname, $proppath, $value) {
         $nav = getNavajo($navname, 'setValue');
-        $p   = $nav->getAbsoluteProperty($proppath);
-        extract($_GET);
-        if(strpos($value, "@") == 0) {
-            if (isset(${substr($value, 1)})) { 
-                $value = ${substr($value, 1)};
+        if ($nav != null) : 
+            $p   = $nav->getAbsoluteProperty($proppath);
+            extract($_GET);
+            if(strpos($value, "@") == 0) {
+                if (isset(${substr($value, 1)})) { 
+                    $value = ${substr($value, 1)};
+                }
             }
-        }
-        $p->setValue($value);
+            if($p != null) :
+                $p->setValue($value);
+            endif;
+        else :
+            return;
+        endif;
     }
 
     static function showNavajo($navajo, $params) {
@@ -133,6 +139,7 @@ class NavajoPhpClient {
         echo "<input type='hidden' name='" . $label . "' value='" . $id . "'/>";
         echo "<input type='hidden' name='" . $label . ":serverCall' value='" . $service . ":" . $method->getName() . "'/>";
         echo "<input type='hidden' name='" . $label . ":id' value='" . $id . "'/>";
+        echo "<input type='hidden' name='joomlaSession' value='" . session_name() . "'/>";            
         echo "\n</div>\n";
     }
 
@@ -340,52 +347,21 @@ class NavajoPhpClient {
     static function inputMultiSelectionProperty($nav, $property, $id, $params, $classsuffix) {
         $value = $property->getAttribute("value");
         $opt = $property->getAllSelections();
-        if ( isset($params['size']) ) { $size = $params['size']; } else { $size = floor(count($opt) / 2); }
-        if (isset($params['width'])) {
-            $width = "style='width:" . $params['width'] . "px'";
-        } else {
-            $width = "style='width:180px'";
-        }
+    $size = floor(count($opt) / 2);
+        echo "<select class='property" . $classsuffix . "' name='" . $id . "[]' multiple size='".$size."'>";
 
-        # two flavours: one with a selection property (default) and one using checkboxes
-        if(isset($params['selectiontype']) && $params['selectiontype'] == 'checkbox') {
-            if(isset($params['columns'])) { $columns = $params['columns']; } else { $columns = 2; }
-            $cntr = 1;
-            # use a hidden var to always have a POST property
-            echo "<input type='hidden' name='" . $id . "'/>";
-
-            foreach ($opt as $current_node) {
-                $name  = $current_node->getAttribute("name");
-                $value = $current_node->getAttribute("value");
-                $selected = $current_node->getAttribute("selected");
-
-                if ($selected == "1") {
-                    # note the "[]" suffix to the element's name! otherwise it won't send an array!
-                    echo "<input name='" . $id. "[]' class='checkboxgroup' type='checkbox' id='". $id . "_" . $cntr . "' value='" . $value . "' checked='true' /><label class='checkboxgroup' for='" . $id . "_" . $cntr . "' " . $width . ">" . $name . "</label>";
-                } else {
-                    echo "<input name='" . $id. "[]' class='checkboxgroup' type='checkbox' id='". $id . "_" . $cntr . "' value='" . $value . "' /><label class='checkboxgroup' for='" . $id . "_" . $cntr . "' " . $width . ">" . $name . "</label>";
-                }
-                if ($cntr % $columns == 0) { echo "<br style='clear:both' />"; }
-                $cntr++;
+        foreach ($opt as $current_node) {
+            $name = $current_node->getAttribute("name");
+            $value = $current_node->getAttribute("value");
+            $selected = $current_node->getAttribute("selected");
+            if ($selected == "1") {
+                echo "<option value='" . $value . "' selected>" . $name . "</option>";
+            } else {
+                echo "<option value='" . $value . "'>" . $name . "</option>";
             }
-
-        } else {
-            echo "<select class='property" . $classsuffix . "' name='" . $id . "[]' multiple size='".$size."' " . $width . ">";
-
-            foreach ($opt as $current_node) {
-                $name = $current_node->getAttribute("name");
-                $value = $current_node->getAttribute("value");
-                $selected = $current_node->getAttribute("selected");
-                if ($selected == "1") {
-                    echo "<option value='" . $value . "' selected>" . $name . "</option>";
-                } else {
-                    echo "<option value='" . $value . "'>" . $name . "</option>";
-                }
-            }
-            echo "</select>";
         }
+        echo "</select>";
     }
-
 
     static function inputDateProperty($nav, $property, $id, $params, $classsuffix = "") {
         $value = date("Y-m-d", strtotime($property->getAttribute("value")));
@@ -474,14 +450,10 @@ class NavajoPhpClient {
     }
 
     static function outputDateProperty($nav, $property, $id, $params, $classsuffix) {
-        if ($property->getAttribute("value") != '') {        
-            $value = date("d/m/Y", strtotime($property->getAttribute("value")));
-        } else { 
-            $value = ''; 
-        }
+        $value = date("d/m/Y", strtotime($property->getAttribute("value")));
         echo $value;
     }
-
+    
     static function outputClockTimeProperty($nav, $property, $id, $params, $classsuffix) {
         $value = $property->getAttribute("value");
         if($value != '') { 

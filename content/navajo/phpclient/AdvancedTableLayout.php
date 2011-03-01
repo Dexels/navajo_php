@@ -3,12 +3,15 @@ class AdvancedTableLayout extends NavajoLayout {
     var $i;
     var $myprops;
     var $columnWidths;
-
-    function __construct($properties, $params, $columnWidths="", $columnLabels="", $columnDirections="") {
+    var $tableId;
+    
+    function __construct($properties, $params, $columnWidths="", $columnLabels="", $columnDirections="", $tableId="") {
         $this->myprops          = $properties;
         $this->columnWidths     = $columnWidths;
         $this->columnLabels     = $columnLabels;        
         $this->columnDirections = $columnDirections;
+        $this->tableId = $tableId;
+	echo "<!-- TableId = $this->tableId -->";
     }
 
     protected function beforeRendering($nav, $params) {
@@ -45,8 +48,11 @@ class AdvancedTableLayout extends NavajoLayout {
     protected function renderHeader($nav, $msg, $params) {
         global $key, $subkey, $altkey, $colGroup, $tableCSS, $totalWidth;
         $j = 0;
-        
-        echo "\n<table id='" . str_replace("/", "_", $nav) . "' class='" . $tableCSS . "' cellpadding='3' cellspacing='0' border='0' width='" . $totalWidth . "'>\n";
+
+        if($this->tableId=="") {
+        	$this->tableId= str_replace("/", "_", $nav);
+        }
+        echo "\n<table id='" . $this->tableId . "' tableId='".$this->tableId."' class='" . $tableCSS . "' cellpadding='3' cellspacing='0' border='0' width='" . $totalWidth . "'>\n";
         echo $colGroup;
 
         if(is_array($this->columnLabels)) {
@@ -91,6 +97,9 @@ class AdvancedTableLayout extends NavajoLayout {
 
         # check if the 'eigenteam' property exists, and its value is true if so, make the table row bold
         $prp = $msg->getProperty('eigenteam');
+        if (is_null($prp)) {
+           $prp  = $msg->getProperty('ClubData');
+        }
         if (is_null($prp)) {
             echo "<tr id='" . $i . "' class='" . $sfx . "'>\n";
         } else {
@@ -188,7 +197,7 @@ class AdvancedTableLayout extends NavajoLayout {
                 echo "<script type='text/javascript'>\n";
                 echo "\tvar myTable = {};\n";
                 echo "\twindow.addEvent('domready', function() {\n";
-                echo "\t\tmyTable = new sortableTable('" . str_replace("/", "_", $nav) . "', {overCls: 'over'" . $sortOn . $sortOrder . ", onClick: function(){}});";
+                echo "\t\tmyTable = new sortableTable('" . $this->tableId . "', {overCls: 'over'" . $sortOn . $sortOrder . ", onClick: function(){}});";
                 echo "\t});\n";
                 echo "</script>\n";
             }
