@@ -27,6 +27,11 @@ class plgAuthenticationNavajo extends JPlugin
         startupNavajo($navajoServer, $navajoUsername , $navajoPassword);
         
         $n = NavajoClient::callInitService("vla/sportlinkathlete/InitLoginAthleteUser");
+	if(is_null($n)) {
+            $response->status   = JAUTHENTICATE_STATUS_FAILURE;
+            $response->error_message = 'Could not authenticate';
+	    return;
+	}
         $usr = $n->getAbsoluteProperty('/UserData/Username');
         if(!isset($usr) || !is_object($usr)) {
             return;
