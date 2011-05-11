@@ -5,6 +5,8 @@
 	<target name="clean">
 		<delete file="navajo_authentication.zip" />
 		<delete file="navajo_content.zip" />
+		<delete file="NavajoJoomlaPlugin.zip" />
+		
 	</target>
 	<target name="authentication">
 		<zip zipfile="navajo_authentication.zip">
@@ -16,6 +18,17 @@
 			<fileset dir="content" />
 		</zip>
 	</target>
-	<target name="all" depends="authentication,content" />
+	<target name="total">
+		<zip zipfile="NavajoJoomlaPlugin.zip">
+			<fileset dir=".">
+				<include name="authentication/**" />
+				<include name="com_navajo/**" />
+				<include name="component/**" />
+				<include name="content/**" />
+			</fileset>
+		</zip>
+	</target>
+
+	<target name="all" depends="authentication,content,total" />
 </project>
 <!-- EOF: $RCSfile$ -->
