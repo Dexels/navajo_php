@@ -7,6 +7,7 @@
 
 	
 	<target name="clean">
+		<delete dir="work"/>
 		<delete dir="distribution"/>		
 		<mkdir dir="distribution"/>		
 
@@ -21,15 +22,25 @@
 			<fileset dir="content" />
 		</zip>
 	</target>
-	<target name="total">
-		<zip zipfile="distribution/NavajoJoomlaPlugin.zip">
+	<target name="total" depends="clean">
+		<mkdir dir="work"/>
+		<mkdir dir="work/plugins"/>
+		<mkdir dir="work/components"/>
+		<copy todir="work/plugins/">
 			<fileset dir=".">
-				<include name="authentication/**" />
-				<include name="com_navajo/**" />
-				<include name="component/**" />
-				<include name="content/**" />
+				<include name="content/**"/>
+				<include name="authentication/**"/>
 			</fileset>
-		</zip>
+		</copy>
+		<copy todir="work/components/">
+			<fileset dir=".">
+				<include name="com_navajo/**"/>
+			</fileset>
+		</copy>
+		
+		<tar destfile="distribution/${ant.project.name}.tar.gz" compression="gzip">
+			<fileset dir="work"/>
+		</tar>
 	</target>
 
 	<target name="all" depends="authentication,content,total" />
