@@ -420,9 +420,10 @@ class NavajoPhpClient {
         if ($value == "")
             $value = "-";
         if ($blnDescription) {
-          echo "<div class='property_value'>" . html_entity_decode($value) . "</div>";
+/// removed html_entity_decode() around $value
+        	echo "<div class='property_value'>" . $value . "</div>";
         } else {
-          echo html_entity_decode($value);
+          echo $value;
         }
     }
 
