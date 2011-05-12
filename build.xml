@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
-<project name="NavajoAuthPlugin" default="all" basedir=".">
-	<property name="archive" value="${ant.project.name}.jar" />
+<project name="NavajoJoomlaPlugin" default="upload" basedir=".">
+	
+	<property file="build.properties" />
+	<property name="deployRoot" value="${navajoScpUser}@${navajoScpServer}:${navajoScpPath}" />
+
+	
 	<target name="clean">
-		<delete file="navajo_authentication.zip" />
-		<delete file="navajo_content.zip" />
-		<delete file="NavajoJoomlaPlugin.zip" />
-		
+		<delete dir="distribution"/>		
+		<mkdir dir="distribution"/>		
+
 	</target>
-	<target name="authentication">
-		<zip zipfile="navajo_authentication.zip">
+	<target name="authentication" depends="clean">
+		<zip zipfile="distribution/navajo_authentication.zip">
 			<fileset dir="authentication" />
 		</zip>
 	</target>
 	<target name="content">
-		<zip zipfile="navajo_content.zip">
+		<zip zipfile="distribution/navajo_content.zip">
 			<fileset dir="content" />
 		</zip>
 	</target>
 	<target name="total">
-		<zip zipfile="NavajoJoomlaPlugin.zip">
+		<zip zipfile="distribution/NavajoJoomlaPlugin.zip">
 			<fileset dir=".">
 				<include name="authentication/**" />
 				<include name="com_navajo/**" />
@@ -30,5 +33,14 @@
 	</target>
 
 	<target name="all" depends="authentication,content,total" />
+	
+	<target name="upload" depends="all">
+		<echo message="Deploying to: ${deployRoot}/${ant.project.name}"/>
+		<scp trust="true"  sftp="true" verbose="true" password="${navajoScpPassword}" todir="${deployRoot}/${ant.project.name}">
+			<fileset dir="distribution">
+			</fileset>
+		</scp>
+	</target>
+
 </project>
 <!-- EOF: $RCSfile$ -->
