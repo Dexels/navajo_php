@@ -363,11 +363,14 @@ function tableInclude($matches) {
         $columnDirections = "";
     }
 
+   /* sortable table Id zodat de tables makkelijker sorteerbaar zijn */
+
     if (isset($matches["tableId"])) {
         $tableId = $matches["tableId"];
     } else {
         $tableId = "";
     }
+    
     
     # "target" attribute is set to the alias of an article; get corresponding articleid from J! database
     if (isset($matches["target"])) {
