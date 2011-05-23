@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/component-install.dtd">
+<install type="component" version="1.5.0">
+	<!-- The following elements are optional and free of formatting conttraints -->
+	<name>Component - Navajo</name>
+	<author>Joomla! Navajo Integration</author>
+	<creationDate>December 2007</creationDate>
+	<copyright>(C) 2007 DexLabs.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>frank@dexels.com</authorEmail>
+	<authorUrl>www.dexels.com</authorUrl>
+	<version>1.0</version>
+	<description>A navajo user synchronisation plugin</description>
+
+	<!-- Site Main File Copy Section -->
+	<files folder="site">
+		<filename>index.html</filename>
+		<filename>navajo.php</filename>
+		<filename>controller.php</filename>
+		<filename>views/index.html</filename>
+		<filename>views/navajo/index.html</filename>
+		<filename>views/navajo/view.html.php</filename>
+		<filename>views/navajo/tmpl/index.html</filename>
+		<filename>views/navajo/tmpl/default.php</filename>
+	</files>
+	<administration>
+	</administration>
+</install>
