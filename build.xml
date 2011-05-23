@@ -22,6 +22,11 @@
 			<fileset dir="content" />
 		</zip>
 	</target>
+	<target name="com_navajo">
+		<zip zipfile="distribution/com_navajo.zip">
+			<fileset dir="com_navajo" />
+		</zip>
+	</target>
 	<target name="total" depends="clean">
 		<mkdir dir="work"/>
 		<mkdir dir="work/plugins"/>
@@ -43,7 +48,7 @@
 		</tar>
 	</target>
 
-	<target name="all" depends="authentication,content,total" />
+	<target name="all" depends="authentication,content,total,com_navajo" />
 	
 	<target name="upload" depends="all">
 		<echo message="Deploying to: ${deployRoot}/${ant.project.name}"/>
