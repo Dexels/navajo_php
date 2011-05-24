@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/component-install.dtd">
 <install type="component" version="1.5.0">
-	<!-- The following elements are optional and free of formatting conttraints -->
+	<!-- The following elements are optional and free of formatting constraints -->
 	<name>Component - Navajo</name>
-	<author>Joomla! Navajo Integration</author>
 	<creationDate>December 2007</creationDate>
-	<copyright>(C) 2007 DexLabs.</copyright>
-	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<author>Joomla! Navajo Integration</author>
 	<authorEmail>frank@dexels.com</authorEmail>
 	<authorUrl>www.dexels.com</authorUrl>
+	<copyright>(C) 2007 DexLabs.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<version>1.0</version>
 	<description>A navajo user synchronisation plugin</description>
 
