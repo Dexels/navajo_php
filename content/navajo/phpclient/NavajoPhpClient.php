@@ -490,10 +490,10 @@ class NavajoPhpClient {
         }
         switch ($extension) {
             case "jpg" :
-                echo "<img src='/tmp/$fileName'/>";
+                echo "<img src='$site/tmp/$fileName'/>";
                 break;
             default :
-                echo "<img src='/tmp/$fileName'/>";
+                echo "<img src='$site/tmp/$fileName'/>";
         }
         fclose($handle);
         # unlink($_SERVER['DOCUMENT_ROOT'] . "/tmp/" . $fileName);
