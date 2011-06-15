@@ -24,7 +24,9 @@
 	</files>
 	
 	<administration>
+	<!-- Administration Main File Copy Section -->
 		<files folder="admin">
+			<!-- Site Main File Copy Section -->
 			<filename>index.html</filename>
 		</files>
 	</administration>
