@@ -23,4 +23,9 @@
 		<filename>views/navajo/tmpl/default.php</filename>
 	</files>
 	
+	<administration>
+		<files folder="admin">
+			<filename>index.html</filename>
+		</files>
+	</administration>
 </install>
