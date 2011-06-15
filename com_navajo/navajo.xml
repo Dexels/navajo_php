@@ -9,7 +9,7 @@
 	<copyright>(C) 2007 DexLabs.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<version>1.0</version>
-	<description>A navajo component</description>
+	<description>A Navajo component</description>
 
 	<!-- Site Main File Copy Section -->
 	<files folder="site">
@@ -24,10 +24,13 @@
 	</files>
 	
 	<administration>
+	<!-- Administration Menu Section -->
+		<menu>A Navajo Integration Product</menu>
 	<!-- Administration Main File Copy Section -->
 		<files folder="admin">
 			<!-- Site Main File Copy Section -->
 			<filename>index.html</filename>
 		</files>
 	</administration>
+	
 </install>
