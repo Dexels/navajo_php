@@ -30,6 +30,7 @@
 		<files folder="admin">
 			<!-- Site Main File Copy Section -->
 			<filename>index.html</filename>
+			<filename>navajo.php</filename>
 		</files>
 	</administration>
 	
