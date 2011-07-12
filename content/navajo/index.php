@@ -63,7 +63,7 @@ function startnavajo() {
 
 function replaceTags($text) {
     initNavajo();
-    $regex = "#{(//|errors|label|classsuffix|showall|showmessage|showmethod|element|table|submit|service|setvalue|setusername)(.*?)}#s";
+    $regex = "#[^&nbsp;]{(//|errors|label|classsuffix|showall|showmessage|showmethod|element|table|submit|service|setvalue|setusername)(.*?)}#s";
     $result = startNavajoInclude() . preg_replace_callback($regex, "navajoTagReplacer",$text) . endNavajoInclude();
     return $result;
 }
