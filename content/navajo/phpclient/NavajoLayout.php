@@ -20,7 +20,11 @@ abstract class NavajoLayout {
             $this->renderFooter($nav, $amsg, $params);
             $this->afterRendering($nav, $params);
         } else {
-            echo "<p>Niets gevonden..</p>";
+			if (isset($params["textNotFound"])) {
+				echo "<p>".$params["textNotFound"]."</p>";
+			} else {
+				echo "<p>Niets gevonden..</p>";
+			}
         }
     }
 
