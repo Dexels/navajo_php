@@ -48,7 +48,18 @@
 		</tar>
 	</target>
 
-	<target name="all" depends="authentication,content,total,com_navajo" />
+	<target name="template_clubsite_new">
+		<zip zipfile="distribution/template_full.zip">
+			<fileset dir="templates/clubsite_new" />
+		</zip>
+	</target>
+	<target name="template_clubsite_minimal">
+		<zip zipfile="distribution/template_minimal.zip">
+			<fileset dir="templates/clubsite_minimal" />
+		</zip>
+	</target>
+	
+	<target name="all" depends="authentication,content,total,com_navajo,template_clubsite_new,template_clubsite_minimal" />
 	
 	<target name="upload" depends="all">
 		<echo message="Deploying to: ${deployRoot}/${ant.project.name}"/>
