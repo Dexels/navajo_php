@@ -37,7 +37,7 @@
         <filename plugin="navajo">navajo/js/sortableTable.js</filename>
 	</files>
 	<params>
-		<param name="navajoServer" type="text" size="64" default="penelope1.dexels.com" label="Server" description="Navajo Server to connect to" />
+		<param name="navajoServer" type="text" size="64" default="atlas.dexels.com" label="Server" description="Navajo Server to connect to" />
         <param name="unionCode" type="text" size="4" default="KNVB" label="Bond" description="Bondsafkorting (bijv. KNVB, KNHB, NHV of KNKV)" />
 		<param name="navajoUsername" type="text" size="20" default="BBKY84H" label="Clubcode" description="Navajo username" />
 		<param name="navajoPassword" type="text" size="20" default="1633" label="Pincode" description="Navajo password" />	
