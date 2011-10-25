@@ -73,13 +73,13 @@
 <head>
     <jdoc:include type="head" />
     <!-- Standaard stylesheets -->
-    <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/clubsite_new/blueprint/screen.css" type="text/css" media="screen, projection"/>
-    <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/clubsite_new/blueprint/print.css" type="text/css" media="print"/>
-    <!--[if lt IE 8]><link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/clubsite_new/blueprint/screen.css" type="text/css" media="screen, projection"/><![endif]-->
-    <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/clubsite_new/blueprint/typography.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/sportlinkclubsites/blueprint/screen.css" type="text/css" media="screen, projection"/>
+    <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/sportlinkclubsites/blueprint/print.css" type="text/css" media="print"/>
+    <!--[if lt IE 8]><link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/sportlinkclubsites/blueprint/screen.css" type="text/css" media="screen, projection"/><![endif]-->
+    <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/sportlinkclubsites/blueprint/typography.css" type="text/css" media="screen"/>
     <!-- Eigen stylesheet -->
-    <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/clubsite_new/css/clubsite.css" type="text/css" media="screen"/>
-     <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/clubsite_new/css/navajo.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/sportlinkclubsites/css/clubsite.css" type="text/css" media="screen"/>
+     <link rel="stylesheet" href="<?php echo $this->baseurl ?>/templates/sportlinkclubsites/css/navajo.css" type="text/css" media="screen"/>
 </head>
 <body>
     <div id="site" class="container">  
