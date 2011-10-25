@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- $Id$ -->
-<project name="NavajoJoomlaPlugin" default="upload" basedir=".">
-	
+<project name="NavajoJoomlaPlugin" default="deploy" basedir=".">
+
 	<property file="build.properties" />
 	<property name="deployRoot" value="${navajoScpUser}@${navajoScpServer}:${navajoScpPath}" />
+	<taskdef name="joomla-install-extension" classname="com.joomboss.InstallExtensionTask" />
+	<taskdef name="joomla-remove-extension" classname="com.joomboss.RemoveExtensionTask" />
 
-	
 	<target name="clean">
-		<delete dir="work"/>
-		<delete dir="distribution"/>		
-		<mkdir dir="distribution"/>		
+		<delete dir="work" />
+		<delete dir="distribution" />
+		<mkdir dir="distribution" />
 
 	</target>
 	<target name="authentication" depends="clean">
@@ -28,23 +29,23 @@
 		</zip>
 	</target>
 	<target name="total" depends="clean">
-		<mkdir dir="work"/>
-		<mkdir dir="work/plugins"/>
-		<mkdir dir="work/components"/>
+		<mkdir dir="work" />
+		<mkdir dir="work/plugins" />
+		<mkdir dir="work/components" />
 		<copy todir="work/plugins/">
 			<fileset dir=".">
-				<include name="content/**"/>
-				<include name="authentication/**"/>
+				<include name="content/**" />
+				<include name="authentication/**" />
 			</fileset>
 		</copy>
 		<copy todir="work/components/">
 			<fileset dir=".">
-				<include name="com_navajo/**"/>
+				<include name="com_navajo/**" />
 			</fileset>
 		</copy>
-		
+
 		<tar destfile="distribution/${ant.project.name}.tar.gz" compression="gzip">
-			<fileset dir="work"/>
+			<fileset dir="work" />
 		</tar>
 	</target>
 
@@ -58,15 +59,35 @@
 			<fileset dir="templates/clubsite_minimal" />
 		</zip>
 	</target>
-	
+
 	<target name="all" depends="authentication,content,total,com_navajo,template_clubsite_new,template_clubsite_minimal" />
-	
+
 	<target name="upload" depends="all">
-		<echo message="Deploying to: ${deployRoot}/${ant.project.name}"/>
-		<scp trust="true"  sftp="true" verbose="true" password="${navajoScpPassword}" todir="${deployRoot}/${ant.project.name}">
+		<echo message="Deploying to: ${deployRoot}/${ant.project.name}" />
+		<scp trust="true" sftp="true" verbose="true" password="${navajoScpPassword}" todir="${deployRoot}/${ant.project.name}">
 			<fileset dir="distribution">
 			</fileset>
 		</scp>
+	</target>
+
+	<property name="url" value="http://testsite2.slclubsite.nl/"/>
+	<property name="username" value="sportlink"/>
+		<property name="password" value="5P0rtl1nK"/>
+	
+	
+
+	<target name="deploy" depends="all">
+		<joomla-remove-extension name="Clubsite Minimal" type="template" url="${url}" adminLogin="${username}" adminPassword="${password}" ftpLogin="" ftpPassword="" />
+		<joomla-install-extension source="distribution/template_minimal.zip" url="${url}" adminlogin="${username}" adminpassword="${password}" ftplogin="" ftppassword="" />
+		<joomla-remove-extension name="Sportlink Clubsites" type="template" url="${url}" adminLogin="${username}" adminPassword="${password}" ftpLogin="" ftpPassword="" />
+		<joomla-install-extension source="distribution/template_full.zip" url="${url}" adminlogin="${username}" adminpassword="${password}" ftplogin="" ftppassword="" />
+				
+		<joomla-remove-extension name="Authentication - Navajo" type="plugin" url="${url}" adminLogin="${username}" adminPassword="${password}" ftpLogin="" ftpPassword="" />
+		<joomla-install-extension source="distribution/navajo_authentication.zip" url="${url}" adminlogin="sportlink" adminpassword="${password}" ftplogin="" ftppassword="" />
+		<joomla-remove-extension name="Content - Navajo" type="plugin" url="${url}" adminLogin="${username}" adminPassword="${password}" ftpLogin="" ftpPassword="" />
+		<joomla-install-extension source="distribution/navajo_content.zip" url="${url}" adminlogin="sportlink" adminpassword="${password}" ftplogin="" ftppassword="" />
+		<joomla-remove-extension name="Navajo" type="component" url="${url}" adminLogin="sportlink" adminPassword="5P0rtl1nK" ftpLogin="" ftpPassword="" />
+		<joomla-install-extension source="distribution/com_navajo.zip" url="${url}" adminlogin="sportlink" adminpassword="${password}" ftplogin="" ftppassword="" />
 	</target>
 </project>
 <!-- EOF: $RCSfile$ -->
