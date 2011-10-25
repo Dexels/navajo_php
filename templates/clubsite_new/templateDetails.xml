@@ -13,6 +13,10 @@
     <files>
         <filename>index.php</filename>
         <filename>templateDetails.xml</filename>
+        <folder>css/</folder>
+        <folder>html/</folder>
+        <folder>js/</folder>
+        <folder>blueprint/</folder>
     </files>
     <positions>
         <position>logo</position>
