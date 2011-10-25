@@ -20,11 +20,11 @@ abstract class NavajoLayout {
             $this->renderFooter($nav, $amsg, $params);
             $this->afterRendering($nav, $params);
         } else {
-			if (isset($params["nietsgevonden"])) {
-				echo "<p>".$params["nietsgevonden"]."</p>";
-			} else {
-				echo "<p>Niets gevonden..</p>";
-			}
+	    if (isset($params["nietsgevonden"])) {
+	       echo "<p>".$params["nietsgevonden"]."</p>";
+	    } else {
+              echo "<p>Niets gevonden..</p>";
+            }
         }
     }
 

@@ -63,7 +63,7 @@ function startnavajo() {
 
 function replaceTags($text) {
     initNavajo();
-    $regex = "#[^&nbsp;]{(//|errors|label|classsuffix|showall|showmessage|showmethod|element|table|submit|service|setvalue|setusername)(.*?)}#s";
+    $regex = "#{(//|errors|label|classsuffix|showall|showmessage|showmethod|element|table|submit|service|setvalue|setusername)(.*?)}#s";
     $result = startNavajoInclude() . preg_replace_callback($regex, "navajoTagReplacer",$text) . endNavajoInclude();
     return $result;
 }
@@ -362,16 +362,6 @@ function tableInclude($matches) {
     } else {
         $columnDirections = "";
     }
-
-   /* sortable table Id zodat de tables makkelijker sorteerbaar zijn */
-
-    if (isset($matches["tableId"])) {
-        $tableId = $matches["tableId"];
-    } else {
-        $tableId = "";
-    }
-    
-    
     # "target" attribute is set to the alias of an article; get corresponding articleid from J! database
     if (isset($matches["target"])) {
            $alias = $matches["target"];
@@ -384,7 +374,7 @@ function tableInclude($matches) {
         $matches["Itemid"] = $_REQUEST["Itemid"];
     }
 
-    NavajoPhpClient :: showTable($navajo, $path, $columns, $matches, $columnWidths, $columnLabels, $columnDirections,"","",$tableId);
+    NavajoPhpClient :: showTable($navajo, $path, $columns, $matches, $columnWidths, $columnLabels, $columnDirections);
 }
 
 function submitInclude($matches) {

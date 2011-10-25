@@ -420,10 +420,9 @@ class NavajoPhpClient {
         if ($value == "")
             $value = "-";
         if ($blnDescription) {
-/// removed html_entity_decode() around $value
-        	echo "<div class='property_value'>" . $value . "</div>";
+          echo "<div class='property_value'>" . html_entity_decode($value) . "</div>";
         } else {
-          echo $value;
+          echo html_entity_decode($value);
         }
     }
 
@@ -490,10 +489,10 @@ class NavajoPhpClient {
         }
         switch ($extension) {
             case "jpg" :
-                echo "<img src='$site/tmp/$fileName'/>";
+                echo "<img src='/tmp/$fileName'/>";
                 break;
             default :
-                echo "<img src='$site/tmp/$fileName'/>";
+                echo "<img src='/tmp/$fileName'/>";
         }
         fclose($handle);
         # unlink($_SERVER['DOCUMENT_ROOT'] . "/tmp/" . $fileName);
