@@ -48,7 +48,7 @@ class plgAuthenticationNavajo extends JPlugin
             $result = $resultProp->getValue();
             $role = $n2->getAbsoluteProperty('/Authenticated/UserRole')->getValue();
         }
-        if( $result == 'true' ) {
+        if( $result == 'true' && ( $role == 'ATHLETEUSER' OR $role == 'CLUB_ADMIN' ) ) {
             if ($role != 'CLUB_ADMIN') {
                 $emm = $n2->getAbsoluteProperty('/Person/EmailAddress')->getValue();
                 $nme = $n2->getAbsoluteProperty('/Person/ExternalId')->getValue();
