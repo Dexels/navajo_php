@@ -1,0 +1,105 @@
+body {
+	background-color: #4a5b62;
+}
+a {
+	font-weight: bold;
+	color: #333;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+	color: #555;
+}
+#site {
+	background-color: white;
+}
+#logo p {
+	margin: 0;
+}
+#sponsors {
+	height: 90px;
+}
+#sponsors div img {
+	float: right;
+	margin: auto 5px auto 10px;
+}
+#nieuwsflits table td {
+	padding: 0 0 0 40px;
+	background:#FFF3A3 url(attention.png) no-repeat scroll 10px 50%;
+	border:1px solid #E7BD72;
+	color:#B79000;
+}
+#nieuwsflits p {
+	margin: 0;
+}
+/* Menu */
+#menu {
+	background-color: #1a2787;
+	border: none;
+}
+#menu a {
+	font-weight: normal;
+	background-color: #f7bc02;
+	color: white;
+}
+#menu li li {
+	width: 250px;
+	background-color: #f7bc02;
+
+}
+/* Uitklap items */
+#menu li.parent {
+	background-color: #f7bc02;
+	color: white;
+}
+#footer {
+	text-align: center;
+	font-size: 0.85em;
+	color: gray;
+}
+.navajo table {
+	border: 1px solid silver;
+}
+.navajo table td {
+	vertical-align: top;
+	font-size: 0.8em;
+	padding: 0.20em
+}
+.navajo table.groter td { 
+    font-size: 0.9em;
+}
+.navajo tr.bold td { 
+    font-weight: bold;
+}
+/* Joomla styles */
+.contentheading {
+	font-size:1.3em;
+	line-height:1em;
+	padding-bottom:0.5em;
+	padding-top:1em;
+}
+.article_column {
+	vertical-align: top;
+	padding-right: 10px;
+	padding-bottom: 10px;
+}
+.article_separator {
+	height: 0;
+	display: none;
+}
+.readon {
+	padding-bottom: 10px;
+	display: block;
+}
+.newsfeed {
+	list-style: none;
+	margin: 10;
+	font-size: 0.700em;
+	padding: 0;
+}
+.newsfeed li {
+	padding-bottom: 3px;
+}
+#midden {
+	margin-top:-20px;
+}

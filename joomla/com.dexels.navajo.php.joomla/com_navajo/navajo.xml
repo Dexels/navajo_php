@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install type="component" version="1.5.0">
+	<name>Navajo</name>
+	<!-- The following elements are optional and free of formatting constraints -->
+	<creationDate>December 2007</creationDate>
+	<author>Joomla! Navajo Integration</author>
+	<authorEmail>frank@dexels.com</authorEmail>
+	<authorUrl>www.dexels.com</authorUrl>
+	<copyright>(C) 2007 DexLabs.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>1.0</version>
+	<description>A Navajo component</description>
+
+	<!-- Site Main File Copy Section -->
+	<files folder="site">
+		<filename>index.html</filename>
+		<filename>navajo.php</filename>
+		<filename>controller.php</filename>
+		<filename>views/index.html</filename>
+		<filename>views/navajo/index.html</filename>
+		<filename>views/navajo/view.html.php</filename>
+		<filename>views/navajo/tmpl/index.html</filename>
+		<filename>views/navajo/tmpl/default.php</filename>
+	</files>
+	
+	<administration>
+	<!-- Administration Main File Copy Section -->
+		<files folder="admin">
+			<!-- Site Main File Copy Section -->
+			<filename>index.html</filename>
+		</files>
+	</administration>
+	
+</install>

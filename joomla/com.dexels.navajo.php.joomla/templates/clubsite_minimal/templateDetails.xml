@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<install version="1.5" type="template">
+    <name>Clubsite Minimal</name>
+    <version>0.2</version>
+    <creationDate>26/01/09</creationDate>
+    <author>Matthijs Philip</author>
+    <authorEmail>mphilip@dexels.com</authorEmail>
+    <authorUrl>http://www.dexels.com</authorUrl>
+    <copyright>Copyright 2009 - www.sportlink.com</copyright>
+    <license></license>
+    <description>
+    </description>
+    <files>
+        <filename>index.php</filename>
+        <filename>template_thumbnail.png</filename>
+        <filename>templateDetails.xml</filename>
+        <filename>params.ini</filename>
+        <folder>css/</folder>
+        <folder>html/</folder>
+        <folder>images/</folder>
+        <folder>js/</folder>
+    </files>
+    <positions>
+        <position>top</position>
+        <position>left</position>
+        <position>user1</position>
+        <position>user2</position>
+        <position>user3</position>
+        <position>footer</position>
+        <position>debug</position>
+    </positions>
+</install>
